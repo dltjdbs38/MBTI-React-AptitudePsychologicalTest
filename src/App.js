@@ -2,7 +2,8 @@ import logo from "./logo.svg";
 import "./App.css";
 import { useState } from "react";
 import StartPage from "./pages/StartPage";
-import TestExample from "./components/TestExample";
+import TestPage from "./pages/TestPage";
+import TestExample from "./pages/TestExample";
 import styled from "styled-components";
 import { Route, Switch, Link, BrowserRouter } from "react-router-dom";
 
@@ -16,6 +17,9 @@ function App() {
           </Route>
           <Route path="/test_example">
             <TestExample></TestExample>
+          </Route>
+          <Route path="/test">
+            <TestPage></TestPage>
           </Route>
         </Switch>
       </div>
