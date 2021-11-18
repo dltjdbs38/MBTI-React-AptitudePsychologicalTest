@@ -12,10 +12,10 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          <Route exact path="/">
+          <Route exact path="/" component={StartPage}>
             <StartPage></StartPage>
           </Route>
-          <Route path="/test_example">
+          <Route path="/test_example" component={TestExample}>
             <TestExample></TestExample>
           </Route>
           <Route path="/test">
