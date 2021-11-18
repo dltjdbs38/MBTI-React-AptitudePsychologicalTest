@@ -6,6 +6,10 @@ import axios from "axios";
 function TestPage() {
   const [progress, setProgress] = useState(0);
   const [saveData, setSaveData] = useState([]);
+  const [userAnswer, setUserAnswer] = useState();
+  const [totalAnswer, setTotalAnswer] = useState([]);
+  const [totalScore, setTotalScore] = useState(0);
+
   useEffect(() => {
     //컴포넌트가 렌더링 될 떄마다 특정 작업을 실행할 수 있도록
     axios
@@ -15,23 +19,48 @@ function TestPage() {
       .then((res) => {
         console.log(res);
         setSaveData(res.data.RESULT);
-        console.log(saveData);
+        setTotalAnswer(Array(saveData.length));
       })
       .catch((err) => {
         console.log(err);
       }); //한번만 실행 원하면 ({함수},[]) 리렌더링시마다 실행하고싶으면 ({함수}) 특정 state가 바뀔떄마다 실행 ({함수},[name])
-  }, []); //그렇다고 한번만 useEffect를 실행시키면 saveData에 아무것도 저장되지 않음.
+  }, []);
   return (
     <div>
       <header>검사 진행</header>
       <h2>{progress}% 진행 중</h2>
-      <ul>
-        {/* {saveData.map((data) => {
-          return <li>{data}</li>; //이 부분을 남기면 위와 같은 오류가 뜸.
-        })} */}
-      </ul>
-
-      <div>문항 넣을 공간</div>
+      <div className="question">
+        {saveData.map((data) => {
+          function inputHandler(e) {
+            setUserAnswer(e.target.value);
+            totalAnswer[Number(data.qitemNo) - 1] = userAnswer;
+            setTotalScore(totalScore + Number(userAnswer));
+            console.log(totalAnswer);
+            console.log(totalScore);
+          }
+          return (
+            <div key={data.qitemNo}>
+              <p>{data.question}</p>
+              <div>
+                <input
+                  type="checkbox"
+                  value="1"
+                  onChange={inputHandler}
+                ></input>
+                {data.answer01} : {data.answer03}
+              </div>
+              <div>
+                <input
+                  type="checkbox"
+                  value="2"
+                  onChange={inputHandler}
+                ></input>
+                {data.answer02} : {data.answer04}
+              </div>
+            </div>
+          );
+        })}
+      </div>
       <button
         onClick={() => {
           setProgress(progress - 10);
