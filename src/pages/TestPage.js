@@ -1,100 +1,78 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter, Link, Route } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  useParams,
+  useRef,
+} from "react-router-dom";
+import Question from "./Question";
 import axios from "axios";
 
 export default function TestPage() {
-  const [progress, setProgress] = useState(0);
   const [saveData, setSaveData] = useState([]); //length 28인 Array
-  const [userAnswer, setUserAnswer] = useState();
-  const [totalAnswer, setTotalAnswer] = useState([]);
-  const [totalScore, setTotalScore] = useState(0);
-  const [currentData, setCurrentData] = useState([]);
-  useEffect(() => {
-    //컴포넌트가 렌더링 될 떄마다 특정 작업을 실행할 수 있도록
-    axios
-      .get(
-        "https://www.career.go.kr/inspct/openapi/test/questions?apikey=8611fd29678269e033bf421a0db5f770&q=6"
-      )
-      .then((res) => {
-        console.log(res);
-        setSaveData(res.data.RESULT);
-        setTotalAnswer(Array(saveData.length));
-        for (let i = 0; i <= saveData.length - 1; i++) {
-          for (let j = 0; j <= currentData.length - 1; j++) {
-            currentData[j] = saveData[i];
-          }
-          if (currentData.length > 5) {
-            setCurrentData([]);
-          }
-        }
-        console.log(currentData);
-      })
-      .catch((err) => {
-        console.log(err);
-      }); //한번만 실행 원하면 ({함수},[]) 리렌더링시마다 실행하고싶으면 ({함수}) 특정 state가 바뀔떄마다 실행 ({함수},[name])
-  }, [currentData]);
-  function PlusProgress({ saveData, progress }) {
+  const [pageCount, setPageCount] = useState(1);
+  const [progress, setProgress] = useState(0);
+  const questions = [];
+  // const [questions, setQuestions] = useState([]);
+  function NextPage(progress, pageCount) {
     setProgress(progress + 100 / (28 / 5));
+    setPageCount(pageCount + 1);
     if (progress > 100) {
       setProgress(100);
     }
     console.log(progress);
   }
-  function MinusProgress({ saveData, progress }) {
-    setProgress(progress - 100 / (28 / 5));
-    if (progress < 0) {
+  function PrevPage(progress, pageCount) {
+    if (pageCount > 0) {
+      setPageCount(pageCount - 1);
+      setProgress(progress - 100 / (28 / 5));
+    } else {
+      setPageCount(0);
       setProgress(0);
     }
     console.log(progress);
   }
-
-  return (
-    <BrowserRouter>
-      <div>
-        <header>검사 진행</header>
-        <h2>{progress}% 진행 중</h2>
-        <div className="question">
-          {currentData.map((data) => {
-            function inputHandler(e) {
-              setUserAnswer(e.target.value);
-              totalAnswer[Number(data.qitemNo) - 1] = userAnswer;
-              setTotalScore(totalScore + Number(userAnswer));
-              console.log(totalAnswer);
-              console.log(totalScore);
-            }
-            return (
-              <div key={data.qitemNo}>
-                <p>{data.question}</p>
-                <div>
-                  <input
-                    type="checkbox"
-                    value="1"
-                    onChange={inputHandler}
-                  ></input>
-                  {data.answer01} : {data.answer03}
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    value="2"
-                    onChange={inputHandler}
-                  ></input>
-                  {data.answer02} : {data.answer04}
-                </div>
-              </div>
-            );
-          })}
+  useEffect(() => {
+    axios
+      .get(
+        "https://www.career.go.kr/inspct/openapi/test/questions?apikey=8611fd29678269e033bf421a0db5f770&q=6"
+      )
+      .then((res) => {
+        setSaveData(res.data.RESULT);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+  for (let i = 0; i < saveData.length; i = i + 5) {
+    questions.push(saveData.slice(i, i + 5));
+  }
+  if (saveData && saveData.length > 0) {
+    console.log("saveData는 아래야");
+    console.log(saveData);
+  }
+  if (questions && questions.length > 0) {
+    console.log("어딜 보니 questions는 아래야");
+    console.log(questions);
+    return (
+      <BrowserRouter>
+        <div>
+          <header>검사 진행</header>
+          <h2>{progress}% 진행 중</h2>
+          <div className="question_block">
+            {/* {questions.map((qset) => {
+              return <Question myquest={qset} pageCount={pageCount} />;
+            })} */}
+            <Question myquest={questions[pageCount]} mypage={pageCount} />
+          </div>
+          <button onClick={PrevPage}>이전</button>
+          <button onClick={NextPage}>다음</button>
         </div>
-        <button onClick={MinusProgress}>이전</button>
-        <button onClick={PlusProgress}>다음</button>
-      </div>
-    </BrowserRouter>
-  );
-}
-
-function PageButton(props) {
-  //useParams는 URL 인자들의 key/value(키/값) 짝들의 객체를 반환한다. 현재 <Route> 의 match.params에 접근하기 위해 사용한다.
-
-  return <div className="pageButton"></div>;
+      </BrowserRouter>
+    );
+  } else {
+    console.log(questions);
+    return <>ㅋㅋ 데이터 넣는 중이지롱</>;
+  }
 }
