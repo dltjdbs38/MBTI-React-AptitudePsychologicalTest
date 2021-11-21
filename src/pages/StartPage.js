@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 export default function StartPage() {
   const [gender, setGender] = useState();
   const [userName, setUserName] = useState();
+  const history = useHistory();
   return (
     <div>
       <header>서윤의 직업 심리 검사</header>
@@ -40,7 +41,13 @@ export default function StartPage() {
           ></input>
         </>
         <br />
-        <Link to="/test_example">검사시작</Link>
+        <button
+          onClick={() => {
+            history.push("/test");
+          }}
+        >
+          검사시작
+        </button>
       </body>
     </div>
   );

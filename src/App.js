@@ -18,8 +18,11 @@ function App() {
           <Route path="/test_example" component={TestExample}>
             <TestExample></TestExample>
           </Route>
-          <Route path="/test/:pagenum">
+          <Route path="/test" component={TestPage}>
             <TestPage></TestPage>
+          </Route>
+          <Route path="/test_result">
+            <>결과 페이지</>
           </Route>
         </Switch>
       </div>
