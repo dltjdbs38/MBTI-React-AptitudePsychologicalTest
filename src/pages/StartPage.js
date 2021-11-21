@@ -24,7 +24,7 @@ export default function StartPage() {
           남
           <input
             type="checkbox"
-            value="남"
+            value="100323"
             onClick={(e) => {
               setGender(e.target.value);
               console.log(gender);
@@ -33,7 +33,7 @@ export default function StartPage() {
           여
           <input
             type="checkbox"
-            value="여"
+            value="100324"
             onClick={(e) => {
               setGender(e.target.value);
               console.log(gender);
@@ -43,7 +43,10 @@ export default function StartPage() {
         <br />
         <button
           onClick={() => {
-            history.push("/test");
+            history.push({
+              pathname: "/test",
+              state: { userName: userName, gender: gender },
+            });
           }}
         >
           검사시작

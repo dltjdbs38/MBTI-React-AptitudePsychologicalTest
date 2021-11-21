@@ -21,8 +21,8 @@ function App() {
           <Route path="/test" component={TestPage}>
             <TestPage></TestPage>
           </Route>
-          <Route path="/test_result">
-            <>결과 페이지</>
+          <Route path="/test_result" component={TestResultPage}>
+            <TestResultPage></TestResultPage>
           </Route>
         </Switch>
       </div>
