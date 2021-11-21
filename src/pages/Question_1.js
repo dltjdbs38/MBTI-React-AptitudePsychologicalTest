@@ -6,16 +6,26 @@ import axios from "axios";
 export default function TestPage(props) {
   const [currentPage, setCurrentPage] = useState(props.mypage);
   const [currentQuestions, setCurrentQuestions] = useState(props.myquest);
+  const [progress, setProgress] = useState(props.myprogress);
   const [userAnswer, setUserAnswer] = useState();
   const [totalAnswer, setTotalAnswer] = useState([]);
   const [totalScore, setTotalScore] = useState(0);
   useEffect(() => {
-    setCurrentQuestions(props.myquest);
-    setCurrentPage(props.mypage);
+    async function setQuestAndPage() {
+      const loading = await Boolean(
+        props.myquest && props.mypage && props.myprogress
+      );
+      if (loading == true) {
+        setCurrentQuestions(props.myquest);
+        setCurrentPage(props.mypage);
+        // set;
+      }
+    }
   }, [currentQuestions, currentPage]);
   return (
     <div>
       <div className="question">
+        <h2>{progress}% 진행 중</h2>
         {props.myquest &&
           currentQuestions.map((data) => {
             function inputHandler(e) {
@@ -28,22 +38,20 @@ export default function TestPage(props) {
             return (
               <div key={data.qitemNo}>
                 <p>{data.question}</p>
-                <div>
+                <form>
                   <input
                     type="checkbox"
                     value="1"
                     onChange={inputHandler}
                   ></input>
                   {data.answer01} : {data.answer03}
-                </div>
-                <div>
                   <input
                     type="checkbox"
                     value="2"
                     onChange={inputHandler}
                   ></input>
                   {data.answer02} : {data.answer04}
-                </div>
+                </form>
               </div>
             );
           })}

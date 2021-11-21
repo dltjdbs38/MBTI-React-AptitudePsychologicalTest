@@ -5,7 +5,7 @@ import StartPage from "./pages/StartPage";
 import TestPage from "./pages/TestPage";
 import TestExample from "./pages/TestExample";
 import styled from "styled-components";
-import { Route, Switch, Link, BrowserRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
           <Route path="/test_example" component={TestExample}>
             <TestExample></TestExample>
           </Route>
-          <Route path="/test">
+          <Route path="/test/:pagenum">
             <TestPage></TestPage>
           </Route>
         </Switch>

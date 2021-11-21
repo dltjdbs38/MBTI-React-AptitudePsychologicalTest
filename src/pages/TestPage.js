@@ -1,40 +1,17 @@
 import React, { useState, useEffect } from "react";
-import {
-  BrowserRouter,
-  Link,
-  Route,
-  useParams,
-  useRef,
-} from "react-router-dom";
-import Question from "./Question";
+import { BrowserRouter, useParams, useHistory } from "react-router-dom";
 import axios from "axios";
 
 export default function TestPage() {
-  const [saveData, setSaveData] = useState([]); //length 28인 Array
-  const [pageCount, setPageCount] = useState(1);
+  const [saveData, setSaveData] = useState([]); //state가 바뀔때마다 재랜더링
+  const [pageCount, setPageCount] = useState(0);
   const [progress, setProgress] = useState(0);
-  const questions = [];
-  // const [questions, setQuestions] = useState([]);
-  function NextPage(progress, pageCount) {
-    setProgress(progress + 100 / (28 / 5));
-    setPageCount(pageCount + 1);
-    if (progress > 100) {
-      setProgress(100);
-    }
-    console.log(progress);
-  }
-  function PrevPage(progress, pageCount) {
-    if (pageCount > 0) {
-      setPageCount(pageCount - 1);
-      setProgress(progress - 100 / (28 / 5));
-    } else {
-      setPageCount(0);
-      setProgress(0);
-    }
-    console.log(progress);
-  }
-  useEffect(() => {
-    axios
+  const questions5 = [];
+  let pagenum = useParams().pagenum;
+  const [pageNum, setPageNum] = useState(Number(pagenum));
+  const history = useHistory();
+  useEffect(async () => {
+    await axios
       .get(
         "https://www.career.go.kr/inspct/openapi/test/questions?apikey=8611fd29678269e033bf421a0db5f770&q=6"
       )
@@ -45,34 +22,70 @@ export default function TestPage() {
         console.log(err);
       });
   }, []);
+  //28개짜리 saveData를 5개짜리 6개의 questions로 만들기
   for (let i = 0; i < saveData.length; i = i + 5) {
-    questions.push(saveData.slice(i, i + 5));
+    questions5.push(saveData.slice(i, i + 5));
   }
+
   if (saveData && saveData.length > 0) {
-    console.log("saveData는 아래야");
+    console.log("saveData 받기 성공");
     console.log(saveData);
   }
-  if (questions && questions.length > 0) {
-    console.log("어딜 보니 questions는 아래야");
-    console.log(questions);
-    return (
-      <BrowserRouter>
-        <div>
-          <header>검사 진행</header>
-          <h2>{progress}% 진행 중</h2>
-          <div className="question_block">
-            {/* {questions.map((qset) => {
-              return <Question myquest={qset} pageCount={pageCount} />;
-            })} */}
-            <Question myquest={questions[pageCount]} mypage={pageCount} />
-          </div>
-          <button onClick={PrevPage}>이전</button>
-          <button onClick={NextPage}>다음</button>
-        </div>
-      </BrowserRouter>
-    );
-  } else {
-    console.log(questions);
-    return <>ㅋㅋ 데이터 넣는 중이지롱</>;
+  if (questions5 && questions5.length > 0) {
+    console.log("questions5 : 5개씩 6묶음 성공");
+    console.log(questions5);
   }
+
+  function PrevPage() {
+    if (0 < pageCount && 1 < pageNum) {
+      setPageCount(pageCount - 1);
+      setPageNum(pageNum - 1);
+      pagenum = pageNum;
+      history.push(`/test/${pagenum}`);
+    } else if (pageCount === 0 && pageNum === 1) {
+      setPageCount(0);
+      setPageNum(1);
+      pagenum = pageNum;
+      history.push(`/test/${pagenum}`);
+    } else {
+      setPageNum(1);
+      setPageCount(0);
+      pagenum = pageNum;
+      console.log("You clicked too much! I will let you go to start page");
+      history.push(`/test/${pagenum}`);
+    }
+  }
+
+  function NextPage() {
+    if (pageCount < questions5.length - 1 && pageNum < questions5.length) {
+      setPageCount(pageCount + 1);
+      setPageNum(pageNum + 1);
+      pagenum = pageNum;
+      history.push(`/test/${pagenum}`);
+    } else if (pageCount === 5 && pageNum === 6) {
+      setPageCount(questions5.length - 1);
+      setPageNum(questions5.length);
+      pagenum = pageNum;
+      history.push(`/test/${pagenum}`);
+    } else {
+      setPageNum(1);
+      setPageCount(0);
+      pagenum = pageNum;
+      console.log("You clicked too much! I will let you go to start page");
+      history.push(`/test/${pagenum}`);
+    }
+  }
+
+  function printQuestion5() {
+    questions5[pageNum - 1];
+  }
+  return (
+    <div>
+      <header>검사 진행</header>
+      <h2>{progress} % 진행 중</h2>
+      <div className="question_block"></div>
+      <button onClick={PrevPage}>이전</button>
+      <button onClick={NextPage}>다음</button>
+    </div>
+  );
 }
