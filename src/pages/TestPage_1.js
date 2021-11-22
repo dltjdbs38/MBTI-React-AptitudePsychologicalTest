@@ -1,100 +1,157 @@
-import { useState, useEffect } from "react";
-import { BrowserRouter, Link, Route } from "react-router-dom";
-import React from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useHistory } from "react-router-dom";
+import { useLocation } from "react-router";
 import axios from "axios";
+import TestResultPage from "./TestResultPage";
 
 export default function TestPage() {
-  const [progress, setProgress] = useState(0);
-  const [saveData, setSaveData] = useState([]); //length 28인 Array
-  const [userAnswer, setUserAnswer] = useState();
-  const [totalAnswer, setTotalAnswer] = useState([]);
-  const [totalScore, setTotalScore] = useState(0);
-  const [currentData, setCurrentData] = useState([]);
-  useEffect(() => {
-    //컴포넌트가 렌더링 될 떄마다 특정 작업을 실행할 수 있도록
-    axios
+  const [saveData, setSaveData] = useState([]); //state가 바뀔때마다 재랜더링
+  const [pageCount, setPageCount] = useState(0);
+  const totalQ = [];
+  const history = useHistory();
+  const location = useLocation();
+  //useLocation으로 StartPage에 있던 값 history로 /test까지 옮겨옴. 여기서 출력했음.
+  const name = location.state.userName;
+  const gender = location.state.gender;
+  //첫 렌더링에만 호출하는 useEffect 사용, 만약 여러 개의 state에 대해 여러 개의 개별적인 동작을 실행시키려면 useEffect 여러개 쓰고 []에 해당 state쓰면 됨.
+  useEffect(async () => {
+    await axios
       .get(
         "https://www.career.go.kr/inspct/openapi/test/questions?apikey=8611fd29678269e033bf421a0db5f770&q=6"
       )
       .then((res) => {
-        console.log(res);
         setSaveData(res.data.RESULT);
-        setTotalAnswer(Array(saveData.length));
-        for (let i = 0; i <= saveData.length - 1; i++) {
-          for (let j = 0; j <= currentData.length - 1; j++) {
-            currentData[j] = saveData[i];
-          }
-          if (currentData.length > 5) {
-            setCurrentData([]);
-          }
-        }
-        console.log(currentData);
       })
       .catch((err) => {
         console.log(err);
-      }); //한번만 실행 원하면 ({함수},[]) 리렌더링시마다 실행하고싶으면 ({함수}) 특정 state가 바뀔떄마다 실행 ({함수},[name])
-  }, [currentData]);
-  function PlusProgress({ saveData, progress }) {
-    setProgress(progress + 100 / (28 / 5));
-    if (progress > 100) {
-      setProgress(100);
-    }
-    console.log(progress);
-  }
-  function MinusProgress({ saveData, progress }) {
-    setProgress(progress - 100 / (28 / 5));
-    if (progress < 0) {
-      setProgress(0);
-    }
-    console.log(progress);
+      });
+  }, []);
+  //28개짜리 saveData를 5개짜리 6개의 totalQ로 만들기
+  for (let i = 0; i < saveData.length; i = i + 5) {
+    totalQ.push(saveData.slice(i, i + 5));
   }
 
+  if (saveData && saveData.length > 0) {
+    console.log("saveData 받기 성공");
+    console.log(saveData);
+  }
+  if (totalQ && totalQ.length > 0) {
+    console.log("totalQ : 5개씩 6묶음 성공");
+    console.log(totalQ);
+  }
+  //페이지 이동 함수 마지막 페이지는 결과페이지로 이동
+  function PrevPage() {
+    if (0 < pageCount) {
+      setPageCount(pageCount - 1);
+    } else if (pageCount === 0) {
+      history.go(1);
+    }
+  }
+
+  function NextPage() {
+    if (pageCount < totalQ.length - 1) {
+      setPageCount(pageCount + 1);
+    } else if (pageCount === totalQ.length - 1) {
+      history.push("/test_result");
+    }
+  }
+  //History에서 가져온 state
+  function printNameandGender() {
+    return (
+      <>
+        이름: {name} 성별: {gender}
+      </>
+    );
+  }
+  function printQuestions() {
+    const printQuest5 = [];
+    if (pageCount === 5) {
+      //마지막 페이지일 경우 결과 페이지로 이동
+      for (let i = 0; i < totalQ[pageCount].length; i++) {
+        if (totalQ && totalQ.length > 0) {
+          printQuest5.push(
+            <div>
+              <h3>
+                {totalQ[pageCount][i].qitemNo}번.{" "}
+                {totalQ[pageCount][i].question}
+              </h3>
+              <form>
+                <div>
+                  <p>
+                    {totalQ[pageCount][i].answer01} :{" "}
+                    {totalQ[pageCount][i].answer03}
+                  </p>
+                  <input
+                    type="radio"
+                    value={totalQ[pageCount][i].answerScore01}
+                  ></input>
+                </div>
+                <div>
+                  <p>
+                    {totalQ[pageCount][i].answer02} :{" "}
+                    {totalQ[pageCount][i].answer04}
+                  </p>
+                  <input
+                    type="radio"
+                    value={totalQ[pageCount][i].answerScore02}
+                  ></input>
+                </div>
+              </form>
+            </div>
+          );
+        }
+      }
+    } else if (pageCount <= 4) {
+      for (let i = 0; i < 5; i++) {
+        if (totalQ && totalQ.length > 0) {
+          printQuest5.push(
+            <div>
+              <h3>
+                {totalQ[pageCount][i].qitemNo}번.{" "}
+                {totalQ[pageCount][i].question}
+              </h3>
+              <form>
+                <div>
+                  <p>
+                    {totalQ[pageCount][i].answer01} :{" "}
+                    {totalQ[pageCount][i].answer03}
+                  </p>
+                  <input
+                    type="checkbox"
+                    value={totalQ[pageCount][i].answerScore01}
+                  ></input>
+                </div>
+                <div>
+                  <p>
+                    {totalQ[pageCount][i].answer02} :{" "}
+                    {totalQ[pageCount][i].answer04}
+                  </p>
+                  <input
+                    type="checkbox"
+                    value={totalQ[pageCount][i].answerScore02}
+                  ></input>
+                </div>
+              </form>
+            </div>
+          );
+        }
+      }
+    }
+    return printQuest5;
+  }
   return (
-    <BrowserRouter>
-      <div>
+    <div>
+      <AnswerContext value={userAnswer}>
         <header>검사 진행</header>
-        <h2>{progress}% 진행 중</h2>
-        <div className="question">
-          {currentData.map((data) => {
-            function inputHandler(e) {
-              setUserAnswer(e.target.value);
-              totalAnswer[Number(data.qitemNo) - 1] = userAnswer;
-              setTotalScore(totalScore + Number(userAnswer));
-              console.log(totalAnswer);
-              console.log(totalScore);
-            }
-            return (
-              <div key={data.qitemNo}>
-                <p>{data.question}</p>
-                <div>
-                  <input
-                    type="checkbox"
-                    value="1"
-                    onChange={inputHandler}
-                  ></input>
-                  {data.answer01} : {data.answer03}
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    value="2"
-                    onChange={inputHandler}
-                  ></input>
-                  {data.answer02} : {data.answer04}
-                </div>
-              </div>
-            );
-          })}
-        </div>
-        <button onClick={MinusProgress}>이전</button>
-        <button onClick={PlusProgress}>다음</button>
-      </div>
-    </BrowserRouter>
+        <h2>0 % 진행 중</h2>
+        <div>현재 페이지는 {pageCount}입니다.</div>
+        <div className="question_block">{printQuestions()}</div>
+        <div>{printNameandGender()}</div>
+        <button onClick={PrevPage}>이전</button>
+        <button onClick={NextPage}>
+          {pageCount === 5 ? "결과보기" : "다음"}
+        </button>
+      </AnswerContext>
+    </div>
   );
-}
-
-function PageButton(props) {
-  //useParams는 URL 인자들의 key/value(키/값) 짝들의 객체를 반환한다. 현재 <Route> 의 match.params에 접근하기 위해 사용한다.
-
-  return <div className="pageButton"></div>;
 }

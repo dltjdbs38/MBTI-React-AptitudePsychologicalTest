@@ -3,7 +3,7 @@ export default function TestExample() {
   return (
     <>
       Test Example
-      <Link to="/test/1">
+      <Link to="/test">
         <button>검사시작</button>
       </Link>
     </>

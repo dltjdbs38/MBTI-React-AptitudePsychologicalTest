@@ -44,7 +44,7 @@ export default function StartPage() {
         <button
           onClick={() => {
             history.push({
-              pathname: "/test",
+              pathname: "/test_example",
               state: { userName: userName, gender: gender },
             });
           }}
