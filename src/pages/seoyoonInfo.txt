@@ -1,0 +1,9 @@
+answers: "B1=1 B2=3 B3=5 B4=7 B5=9 B6=11 B7=14 B8=15 B9=18 B10=19 B11=21 B12=24 B13=25 B14=28 B15=29 B16=31 B17=34 B18=35 B19=38 B20=39 B21=42 B22=44 B23=45 B24=48 B25=49 B26=51 B27=54 B28=55"
+apikey: "8611fd29678269e033bf421a0db5f770"
+gender: "100324"
+grade: "1"
+name: "이서윤"
+qestrnSeq: "6"
+startDtm: 1637684669588
+trgetSe: "100208"
+[[Prototype]]: Object

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router";
 import axios from "axios";
@@ -215,7 +215,7 @@ export default function TestPage() {
           ? `${countProgress()}% 진행 중`
           : `${countProgress()}% 진행 완료`}
       </h2>
-      <ProgressBar animated now={60} />
+      {/* <ProgressBar animated now={60} /> */}
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>

@@ -36,14 +36,20 @@ button {
 }
 table {
   border-collapse: collapse;
-  width: 100%;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+table thead {
+  font-size: 20px;
+  font-weight: bold;
 }
 table td {
   width: 25%;
   height: 70px;
   border: 1px solid #ccc;
   text-align: center;
-  font-size: 26px;
+  font-size: 20px;
 }
 
 /* a {
