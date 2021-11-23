@@ -226,24 +226,25 @@ export default function TestPage() {
     return printQuest5;
   }
 
-  // function makeAnsStr() {
-  //   const answerArray = [];
-  //   const newAnswers = { ...userAnswer };
-  //   if (localStorage.length === saveData.length) {
-  //     for (let i = 1; i <= localStorage.length; i++) {
-  //       newAnswers[i] = localStorage.getItem(i);
-  //       setUserAnswer(newAnswers);
-  //       answerArray.push(userAnswer[i]);
-  //     }
-  //   }
-  //   console.log(answerArray);
-  //   return answerArray;
-  // }
+  function makeAnsStr() {
+    const answerArray = [];
+    const newAnswers = { ...userAnswer };
+    if (localStorage.length === saveData.length) {
+      for (let i = 1; i <= localStorage.length; i++) {
+        newAnswers[i] = localStorage.getItem(i);
+        setUserAnswer(newAnswers);
+        answerArray.push(userAnswer[i]);
+      }
+    }
+    console.log(answerArray);
+    return answerArray;
+  }
 
-  // useEffect(() => {
-  //   makeAnsStr();
-  //   console.log(userAnswer);
-  // }, [userAnswer]);
+  useEffect(() => {
+    makeAnsStr();
+    console.log(userAnswer);
+  }, [userAnswer]);
+
   return (
     <div>
       <header>검사 진행</header>
