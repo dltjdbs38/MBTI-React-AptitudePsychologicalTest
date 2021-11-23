@@ -18,8 +18,6 @@ export default function StartPage() {
             onChange={(e) => {
               setUserName(e.target.value);
               console.log(userName);
-              const newUser = { ...startUser };
-              newUser.name = e.target.value;
             }}
           ></input>
         </>

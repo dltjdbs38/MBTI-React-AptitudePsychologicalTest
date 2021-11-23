@@ -7,7 +7,8 @@ import TestExample from "./pages/TestExample";
 import TestResultPage from "./pages/TestResultPage";
 import styled from "styled-components";
 import { Route, Switch } from "react-router-dom";
-import UserInfo, { InfoContext } from "./pages/UserInfo";
+import UserInfo, { UserContext } from "./pages/UserInfo";
+import ResultGraph from "./pages/ResultGraph";
 
 export default function App() {
   return (
@@ -24,6 +25,7 @@ export default function App() {
             <TestPage></TestPage>
           </Route>
           <Route path="/test_result" component={TestResultPage}></Route>
+          <Route path="/result_graph" component={ResultGraph}></Route>
         </Switch>
       </div>
     </UserInfo>

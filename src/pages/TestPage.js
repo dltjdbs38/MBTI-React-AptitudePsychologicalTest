@@ -2,11 +2,12 @@ import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router";
 import axios from "axios";
-import { InfoContext } from "./UserInfo";
+import { UserContext } from "./UserInfo";
 import { Radio } from "antd";
 import { tupleExpression } from "@babel/types";
 
 export default function TestPage() {
+  const context = useContext(UserContext);
   const [saveData, setSaveData] = useState([]); //state가 바뀔때마다 재랜더링
   const [pageCount, setPageCount] = useState(0);
   const history = useHistory();
@@ -61,6 +62,7 @@ export default function TestPage() {
   //change 이벤트가 일어나면 -> saveStorage를 해라!
 
   const changeHandler = (e) => {
+    //state덕분에 클릭할때마다 재랜더링이 된다.
     window.localStorage.setItem(e.target.name, e.target.value);
     const newAnswers = [...getAnswerStorage];
     for (let i = 0; i <= localStorage.length; i++) {
@@ -69,7 +71,7 @@ export default function TestPage() {
     }
   };
   useEffect(() => {
-    //한 박자씩 느리게 들어가는 건 출력만 그런거라 문제 X
+    //한 박자씩 느리게 console출력되는 건 출력만 그런거라 문제 X
     //출력 이쁘게 하고 싶으면 이렇게 해라
     console.log(getAnswerStorage);
   }, [getAnswerStorage]);
@@ -195,7 +197,11 @@ export default function TestPage() {
   return (
     <div>
       <header>검사 진행</header>
-      <h2>{countProgress()}% 진행 중</h2>
+      <h2>
+        {countProgress() !== 100
+          ? `${countProgress()}% 진행 중`
+          : `${countProgress()}% 진행 완료`}
+      </h2>
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>
