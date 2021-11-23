@@ -11,7 +11,7 @@ export default function TestPage() {
   const [pageCount, setPageCount] = useState(0);
   const history = useHistory();
   const totalQ = [];
-  const [userAnswer, setUserAnswer] = useState({});
+  const [getAnswerStorage, setGetAnswerStorage] = useState([]);
   //데이터 처음 한번만 받아오는 함수
   useEffect(() => {
     async function fetchData() {
@@ -62,6 +62,12 @@ export default function TestPage() {
 
   const changeHandler = (e, checked) => {
     window.localStorage.setItem(e.target.name, e.target.value);
+    const newAnswers = [...getAnswerStorage];
+    for (let i = 0; i < localStorage.length; i++) {
+      newAnswers[i] = localStorage.getItem(i);
+      setGetAnswerStorage(newAnswers);
+      console.log(getAnswerStorage);
+    }
     // if (!window.localStorage.getItem(e.target.name)) {
     //   //없었거나
     //   saveStorage(e.target.name, e.target.value);
@@ -225,25 +231,6 @@ export default function TestPage() {
     }
     return printQuest5;
   }
-
-  function makeAnsStr() {
-    const answerArray = [];
-    const newAnswers = { ...userAnswer };
-    if (localStorage.length === saveData.length) {
-      for (let i = 1; i <= localStorage.length; i++) {
-        newAnswers[i] = localStorage.getItem(i);
-        setUserAnswer(newAnswers);
-        answerArray.push(userAnswer[i]);
-      }
-    }
-    console.log(answerArray);
-    return answerArray;
-  }
-
-  useEffect(() => {
-    makeAnsStr();
-    console.log(userAnswer);
-  }, [userAnswer]);
 
   return (
     <div>
