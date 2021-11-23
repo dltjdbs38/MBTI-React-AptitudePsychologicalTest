@@ -11,19 +11,21 @@ import UserInfo, { InfoContext } from "./pages/UserInfo";
 
 export default function App() {
   return (
-    <div className="App">
-      <Switch>
-        <Route exact path="/">
-          <StartPage></StartPage>
-        </Route>
-        <Route path="/test_example">
-          <TestExample></TestExample>
-        </Route>
-        <Route path="/test">
-          <TestPage></TestPage>
-        </Route>
-        <Route path="/test_result" component={TestResultPage}></Route>
-      </Switch>
-    </div>
+    <UserInfo>
+      <div className="App">
+        <Switch>
+          <Route exact path="/">
+            <StartPage></StartPage>
+          </Route>
+          <Route path="/test_example">
+            <TestExample></TestExample>
+          </Route>
+          <Route path="/test">
+            <TestPage></TestPage>
+          </Route>
+          <Route path="/test_result" component={TestResultPage}></Route>
+        </Switch>
+      </div>
+    </UserInfo>
   );
 }

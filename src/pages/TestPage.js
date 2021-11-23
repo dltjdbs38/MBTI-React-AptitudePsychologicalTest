@@ -4,6 +4,7 @@ import { useLocation } from "react-router";
 import axios from "axios";
 import { InfoContext } from "./UserInfo";
 import { Radio } from "antd";
+import { tupleExpression } from "@babel/types";
 
 export default function TestPage() {
   const [saveData, setSaveData] = useState([]); //state가 바뀔때마다 재랜더링
@@ -63,9 +64,53 @@ export default function TestPage() {
   // .filter = 어떤 조건 성립하는 요소만 배열에 넣어 그 배열 반환
 
   //change 이벤트가 일어나면 -> saveStorage를 해라!
+
   const changeHandler = (e) => {
-    saveStorage(e.target.name, e.target.value);
+    if (!window.localStorage.getItem(e.target.name)) {
+      //없었거나
+      saveStorage(e.target.name, e.target.value);
+    } else {
+      if (window.localStorage.getItem(e.target.name) !== e.target.value) {
+        //있는데 다른 값이었을 때
+        saveStorage(e.target.name, e.target.value);
+      } else {
+        //값도 있고, 값도 해당 값이라면
+      }
+    }
   };
+
+  function checkRadio1(i) {
+    if (window.localStorage.getItem(totalQ[pageCount][i].qitemNo)) {
+      // 만약 localStorage에 이 질문번호에 대한 value가 있으면
+      if (
+        window.localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
+        totalQ[pageCount][i].answerScore01
+      ) {
+        return "answer01"; //그 value가 1번이라면 true를 띄운다.
+      } else {
+        return "answer02"; //값은 있는데 value가 2번이라면
+      }
+    } else {
+      //값조차 없으면
+      return false;
+    }
+  }
+  function checkRadio2(i) {
+    if (window.localStorage.getItem(totalQ[pageCount][i].qitemNo)) {
+      // 만약 localStorage에 이 질문번호에 대한 value가 있으면
+      if (
+        window.localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
+        totalQ[pageCount][i].answerScore02
+      ) {
+        return "answer02"; //그 value가 2번이라면 true를 띄운다.
+      } else {
+        return "answer01"; //값은 있는데 value가 1번이라면
+      }
+    } else {
+      //값조차 없으면
+      return false;
+    }
+  }
 
   function countProgress() {
     const progressRate = Math.round((window.localStorage.length * 100) / 28);
@@ -94,7 +139,9 @@ export default function TestPage() {
                     type="radio"
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore01}
-                    onChange={changeHandler}
+                    onClick={changeHandler}
+                    checked={checkRadio1(i) === "answer01" ? true : false}
+                    readOnly
                   ></input>
                 </div>
                 <div>
@@ -106,7 +153,9 @@ export default function TestPage() {
                     type="radio"
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore02}
-                    onChange={changeHandler}
+                    onClick={changeHandler}
+                    checked={checkRadio2(i) === "answer02" ? true : false}
+                    readOnly
                   ></input>
                 </div>
               </form>
@@ -133,7 +182,9 @@ export default function TestPage() {
                     type="radio"
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore01}
-                    onChange={changeHandler}
+                    onClick={changeHandler}
+                    checked={checkRadio1(i) === "answer01" ? true : false}
+                    readOnly
                   ></input>
                 </div>
                 <div>
@@ -145,7 +196,9 @@ export default function TestPage() {
                     type="radio"
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore02}
-                    onChange={changeHandler}
+                    onClick={changeHandler}
+                    checked={checkRadio2(i) === "answer02" ? true : false}
+                    readOnly
                   ></input>
                 </div>
               </form>
@@ -156,16 +209,25 @@ export default function TestPage() {
     }
     return printQuest5;
   }
-  function makeAnsStr() {
-    const newAnswers = { ...userAnswer };
-    if (localStorage.length === saveData.length) {
-      for (let i = 1; i <= localStorage.length; i++) {
-        newAnswers[String(i)] = localStorage.getItem(String(i));
-      }
-    }
-    console.log(newAnswers);
-  }
-  useEffect(() => {}, [userAnswer]);
+
+  // function makeAnsStr() {
+  //   const answerArray = [];
+  //   const newAnswers = { ...userAnswer };
+  //   if (localStorage.length === saveData.length) {
+  //     for (let i = 1; i <= localStorage.length; i++) {
+  //       newAnswers[i] = localStorage.getItem(i);
+  //       setUserAnswer(newAnswers);
+  //       answerArray.push(userAnswer[i]);
+  //     }
+  //   }
+  //   console.log(answerArray);
+  //   return answerArray;
+  // }
+
+  // useEffect(() => {
+  //   makeAnsStr();
+  //   console.log(userAnswer);
+  // }, [userAnswer]);
   return (
     <div>
       <header>검사 진행</header>
