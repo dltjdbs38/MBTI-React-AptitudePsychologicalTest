@@ -5,6 +5,7 @@ import axios from "axios";
 import { UserContext } from "./UserInfo";
 import { Radio } from "antd";
 import { tupleExpression } from "@babel/types";
+import ProgressBar from "react-bootstrap/ProgressBar";
 
 export default function TestPage() {
   const context = useContext(UserContext); //useContext(컨텍스트 이름 파일명X)를 쓰면 <.Consumer> 를 안 감싸줘도 됨
@@ -214,6 +215,7 @@ export default function TestPage() {
           ? `${countProgress()}% 진행 중`
           : `${countProgress()}% 진행 완료`}
       </h2>
+      <ProgressBar animated now={60} />
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>
