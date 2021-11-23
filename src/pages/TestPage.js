@@ -66,26 +66,13 @@ export default function TestPage() {
     for (let i = 0; i <= localStorage.length; i++) {
       newAnswers[i] = localStorage.getItem(i);
       setGetAnswerStorage(newAnswers);
-      console.log(getAnswerStorage);
     }
   };
-
-  // function checkRadio1(i) {
-  //   if (window.localStorage.getItem(totalQ[pageCount][i].qitemNo)) {
-  //     // 만약 localStorage에 이 질문번호에 대한 value가 있으면
-  //     if (
-  //       window.localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
-  //       totalQ[pageCount][i].answerScore01
-  //     ) {
-  //       return "answer01"; //그 value가 1번이라면 true를 띄운다.
-  //     } else {
-  //       return "answer02"; //값은 있는데 value가 2번이라면
-  //     }
-  //   } else {
-  //     //값조차 없으면
-  //     return false;
-  //   }
-  // }
+  useEffect(() => {
+    //한 박자씩 느리게 들어가는 건 출력만 그런거라 문제 X
+    //출력 이쁘게 하고 싶으면 이렇게 해라
+    console.log(getAnswerStorage);
+  }, [getAnswerStorage]);
 
   function countProgress() {
     const progressRate = Math.round((window.localStorage.length * 100) / 28);
