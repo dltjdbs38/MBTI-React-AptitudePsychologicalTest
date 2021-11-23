@@ -1,12 +1,22 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import UserInfo, { UserContext } from "./UserInfo";
 export default function StartPage() {
   const [gender, setGender] = useState();
   const [userName, setUserName] = useState();
   const history = useHistory();
-  const user = useContext(UserContext);
+  const context = useContext(UserContext);
   localStorage.clear(); //localstorage 초기화
+
+  useEffect(() => {
+    context.name = userName;
+    // delete context.answer;
+    context.gender = gender;
+    console.log(context);
+    console.log(gender);
+    console.log(userName);
+  }, [userName, gender]);
+
   return (
     <div>
       <header>서윤의 직업 심리 검사</header>
@@ -21,26 +31,27 @@ export default function StartPage() {
             }}
           ></input>
         </>
-        <button>입력</button>
         <br />
         <>
           남
           <input
-            type="checkbox"
+            type="radio"
             value="100323"
-            onClick={(e) => {
+            onChange={(e) => {
               setGender(e.target.value);
               console.log(gender);
             }}
+            checked={gender === "100323" ? true : false}
           ></input>
           여
           <input
-            type="checkbox"
+            type="radio"
             value="100324"
-            onClick={(e) => {
+            onChange={(e) => {
               setGender(e.target.value);
               console.log(gender);
             }}
+            checked={gender === "100324" ? true : false}
           ></input>
         </>
         <br />

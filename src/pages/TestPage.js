@@ -7,7 +7,7 @@ import { Radio } from "antd";
 import { tupleExpression } from "@babel/types";
 
 export default function TestPage() {
-  const context = useContext(UserContext);
+  const context = useContext(UserContext); //useContext(컨텍스트 이름 파일명X)를 쓰면 <.Consumer> 를 안 감싸줘도 됨
   const [saveData, setSaveData] = useState([]); //state가 바뀔때마다 재랜더링
   const [pageCount, setPageCount] = useState(0);
   const history = useHistory();
@@ -66,6 +66,7 @@ export default function TestPage() {
     window.localStorage.setItem(e.target.name, e.target.value);
     const newAnswers = [...getAnswerStorage];
     for (let i = 0; i <= localStorage.length; i++) {
+      //다행히도 localStorage의 key와 index가 같다.
       newAnswers[i] = localStorage.getItem(i);
       setGetAnswerStorage(newAnswers);
     }
@@ -74,6 +75,18 @@ export default function TestPage() {
     //한 박자씩 느리게 console출력되는 건 출력만 그런거라 문제 X
     //출력 이쁘게 하고 싶으면 이렇게 해라
     console.log(getAnswerStorage);
+  }, [getAnswerStorage]); // [null, '1', '3', '6', '7', '9', '11', '14', '15', '18', '19', '21', '23', '25', '27', '29', '32', '33', '36', '37', '39', '41', '43', '46', '47', '49', '51', '53', '55']
+
+  useEffect(() => {
+    const makeAnsStr = [];
+    for (let i = 1; i <= getAnswerStorage.length - 1; i++) {
+      makeAnsStr.push("B" + String(i) + "=" + getAnswerStorage[i]);
+    }
+    const totalAnsStr = makeAnsStr.join(" ");
+    console.log(totalAnsStr);
+    context.answers = totalAnsStr;
+    // delete context.answer;
+    console.log(context);
   }, [getAnswerStorage]);
 
   function countProgress() {
@@ -193,7 +206,6 @@ export default function TestPage() {
     }
     return printQuest5;
   }
-
   return (
     <div>
       <header>검사 진행</header>
