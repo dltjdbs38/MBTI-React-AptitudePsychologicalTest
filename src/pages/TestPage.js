@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router";
 import axios from "axios";
@@ -10,12 +10,8 @@ export default function TestPage() {
   const [pageCount, setPageCount] = useState(0);
   const history = useHistory();
   const totalQ = [];
-  const [currUserAnswer, setCurrUserAnswer] = useState("");
-  const [currQuestionNum, setCurrQuestionNum] = useState("");
-  // const [userAnswerList, setUserAnswerList] = useState({});
-  const [userAnswerArray, setUserAnswerArray] = useState(new Array(28));
-  const [finalRadio, setFinalRadio] = useState(false);
-  const [finalTotalAnsStr, setFinalTotalAnsStr] = useState("");
+  const [userAnswer, setUserAnswer] = useState({});
+  //데이터 처음 한번만 받아오는 함수
   useEffect(() => {
     async function fetchData() {
       await axios
@@ -35,14 +31,14 @@ export default function TestPage() {
   for (let i = 0; i < saveData.length; i = i + 5) {
     totalQ.push(saveData.slice(i, i + 5));
   }
-
+  //데이터 잘 받아왔는지 확인용 console.log
   if (saveData && saveData.length > 0) {
-    console.log(saveData); //saveData 받기
+    console.log(saveData);
   }
   if (totalQ && totalQ.length > 0) {
-    console.log(totalQ); //totalQ 5개묶음 6개 받기
+    console.log(totalQ);
   }
-  //페이지 이동 함수 마지막 페이지는 결과페이지로 이동
+  //페이지 이동 함수 처음 페이지는 test_example로 이동
   function PrevPage() {
     if (0 < pageCount) {
       setPageCount(pageCount - 1);
@@ -50,7 +46,7 @@ export default function TestPage() {
       history.go(1);
     }
   }
-
+  //페이지 이동 함수 마지막 페이지는 결과페이지로 이동
   function NextPage() {
     if (pageCount < totalQ.length - 1) {
       setPageCount(pageCount + 1);
@@ -58,81 +54,23 @@ export default function TestPage() {
       history.push("/test_result");
     }
   }
-  const checkHandler = (e) => {
-    e.preventDefault();
-  };
-  const clickHandler = (e) => {
-    e.preventDefault();
-    // setCurrQuestionNum("B" + e.target.name); //'B1'
-    setCurrQuestionNum(Number(e.target.name)); //인덱스로 쓰려고 1 숫자로 바꿈
-    setCurrUserAnswer(e.target.value); //'1'
-    // 1. {"": '', B1: '1', B2: '3', B3: '5'}
-    // let newAnswers = { ...userAnswerList }; //임시 배열
-    // newAnswers[currQuestionNum] = currUserAnswer; //중복 키 알아서 갱신됨
-    // setUserAnswerList(newAnswers);
-    //... 전개연산자 기존의 객체 안에 있는 내용을 해당 위치에 풀어준다. 즉, userAnswerList를 바꾸는 게 아닌 복사해다가 거기에 추가하는 느낌
 
-    // 2. [undefined, '1', '3', '5', '7', '9', '11', '13', '15', '18', '19', '21', '23', '26', '27', '30', '31', '33', '35', '38', '39', '41', '43', '46', '47', '49', '51', '53', '55']
-    let newAnswers = [...userAnswerArray];
-    newAnswers[currQuestionNum] = currUserAnswer;
-    setUserAnswerArray(newAnswers);
-    console.log("클릭할 때마다 userAnswerArray 입력 중");
-    console.log(userAnswerArray);
+  const saveStorage = (key, value) => {
+    const userObj = value;
+    window.localStorage.setItem(key, JSON.stringify(userObj));
+  };
+  // useCallback = 메모제이션 된 콜백을 반환 ,
+  // .filter = 어떤 조건 성립하는 요소만 배열에 넣어 그 배열 반환
+
+  //change 이벤트가 일어나면 -> saveStorage를 해라!
+  const changeHandler = (e) => {
+    saveStorage(e.target.name, e.target.value);
   };
 
-  // 1.
-  // useEffect(() => {
-  //   async function makeAnswerStr() {
-  //     const AnsStr = [];
-  //     for (let i = 1; i < userAnswerArray.length; i++) {
-  //       AnsStr.push("B" + String(i) + "=" + userAnswerArray[i]);
-  //       // console.log(AnsStr);
-  //     }
-  //     const totalAnsStr = AnsStr.join(" ");
-  //     console.log("네가 낸 답 string으로 만들고 있음");
-  //     console.log(totalAnsStr);
-  //     return totalAnsStr;
-  //   }
-  //   makeAnswerStr();
-  // }, [currUserAnswer, userAnswerArray]);
-
-  // 2.
-  useEffect(() => {
-    function makeAnswerStr() {
-      const AnsStr = [];
-      for (let i = 1; i < userAnswerArray.length; i++) {
-        AnsStr.push("B" + String(i) + "=" + userAnswerArray[i]);
-        // console.log(AnsStr);
-      }
-      const totalAnsStr = AnsStr.join(" ");
-      return totalAnsStr;
-    }
-    function checkRadio() {
-      const radio = false;
-      if (userAnswerArray[Number(currQuestionNum)] === undefined) {
-        console.log(`${currQuestionNum} : false`);
-        return radio; //radio check false
-      } else if (userAnswerArray[Number(currQuestionNum)] !== undefined) {
-        console.log(`${currQuestionNum} : true`);
-        return !radio; //radio check true
-      }
-    }
-    async function asyncCall() {
-      try {
-        console.log("네가 낸 답 string으로 만들고 있음");
-        const result1 = await makeAnswerStr();
-        console.log(result1);
-        setFinalTotalAnsStr(result1);
-        console.log("체크박스 로딩 중");
-        const result2 = await checkRadio();
-        setFinalRadio(result2);
-        console.log("체크박스 체크 완료");
-      } catch (err) {
-        console.log(err);
-      }
-    }
-    asyncCall();
-  }, [currUserAnswer, userAnswerArray]);
+  function countProgress() {
+    const progressRate = Math.round((window.localStorage.length * 100) / 28);
+    return progressRate;
+  }
 
   function printQuestions() {
     const printQuest5 = [];
@@ -156,8 +94,7 @@ export default function TestPage() {
                     type="radio"
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore01}
-                    onClick={clickHandler}
-                    checked={finalRadio}
+                    onChange={changeHandler}
                   ></input>
                 </div>
                 <div>
@@ -169,8 +106,7 @@ export default function TestPage() {
                     type="radio"
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore02}
-                    onClick={clickHandler}
-                    checked={finalRadio}
+                    onChange={changeHandler}
                   ></input>
                 </div>
               </form>
@@ -197,8 +133,7 @@ export default function TestPage() {
                     type="radio"
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore01}
-                    onClick={clickHandler}
-                    checked={finalRadio}
+                    onChange={changeHandler}
                   ></input>
                 </div>
                 <div>
@@ -210,8 +145,7 @@ export default function TestPage() {
                     type="radio"
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore02}
-                    onClick={clickHandler}
-                    checked={finalRadio}
+                    onChange={changeHandler}
                   ></input>
                 </div>
               </form>
@@ -222,10 +156,20 @@ export default function TestPage() {
     }
     return printQuest5;
   }
+  function makeAnsStr() {
+    const newAnswers = { ...userAnswer };
+    if (localStorage.length === saveData.length) {
+      for (let i = 1; i <= localStorage.length; i++) {
+        newAnswers[String(i)] = localStorage.getItem(String(i));
+      }
+    }
+    console.log(newAnswers);
+  }
+  useEffect(() => {}, [userAnswer]);
   return (
     <div>
       <header>검사 진행</header>
-      <h2>0 % 진행 중</h2>
+      <h2>{countProgress()}% 진행 중</h2>
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>
