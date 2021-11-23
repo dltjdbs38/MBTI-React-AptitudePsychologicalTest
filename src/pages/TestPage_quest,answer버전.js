@@ -1,20 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import { useLocation } from "react-router";
 import axios from "axios";
 import { InfoContext } from "./UserInfo";
 import { Radio } from "antd";
+import { tupleExpression } from "@babel/types";
 
 export default function TestPage() {
   const [saveData, setSaveData] = useState([]); //state가 바뀔때마다 재랜더링
   const [pageCount, setPageCount] = useState(0);
   const history = useHistory();
   const totalQ = [];
-  const [currUserAnswer, setCurrUserAnswer] = useState("");
-  const [currQuestionNum, setCurrQuestionNum] = useState("");
-  const [userAnswerArray, setUserAnswerArray] = useState(new Array(29));
-  const [finalTotalAnsStr, setFinalTotalAnsStr] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
+  const [quest, setQuest] = useState("");
+  const [answer, setAnswer] = useState("");
+  const [getAnswerStorage, setGetAnswerStorage] = useState([]);
+  //데이터 처음 한번만 받아오는 함수
   useEffect(() => {
     async function fetchData() {
       await axios
@@ -57,45 +57,53 @@ export default function TestPage() {
       history.push("/test_result");
     }
   }
+  // useCallback = 메모제이션 된 콜백을 반환 ,
+  // .filter = 어떤 조건 성립하는 요소만 배열에 넣어 그 배열 반환
 
-  //변화 시 체크 해제/등록 & AnswerArray에 e.target.name과 e.target.value가 추가되어야 함.
+  //change 이벤트가 일어나면 -> saveStorage를 해라!
+
   const changeHandler = (e) => {
-    e.preventDefault();
-    setIsChecked(!isChecked);
-    if (e.target.checked === true) {
-      setCurrQuestionNum(Number(e.target.name)); //1
-      setCurrUserAnswer(e.target.value); //'1'
-      console.log(currUserAnswer);
-      // 2. [undefined, '1', '3', '5', '7', '9', '11', '13', '15', '18', '19', '21', '23', '26', '27', '30', '31', '33', '35', '38', '39', '41', '43', '46', '47', '49', '51', '53', '55']
-      let newAnswers = [...userAnswerArray];
-      newAnswers[currQuestionNum] = currUserAnswer;
-      setUserAnswerArray(newAnswers);
-    }
+    setQuest(e.target.name);
+    setAnswer(e.target.value);
+    // const newAnswers = [...getAnswerStorage];
+    // for (let i = 0; i <= localStorage.length; i++) {
+    //   newAnswers[i] = localStorage.getItem(i);
+    //   setGetAnswerStorage(newAnswers);
+    //   console.log(getAnswerStorage);
+    // }
+    console.log(getAnswerStorage);
   };
-  // 2.
-  // useEffect(() => {
-  //   function makeAnswerStr() {
-  //     const AnsStr = [];
-  //     for (let i = 1; i < userAnswerArray.length; i++) {
-  //       AnsStr.push("B" + String(i) + "=" + userAnswerArray[i]);
-  //     }
-  //     const totalAnsStr = AnsStr.join(" ");
-  //     setFinalTotalAnsStr(totalAnsStr);
-  //     console.log(finalTotalAnsStr);
-  //     return finalTotalAnsStr;
-  //   }
-  //   makeAnswerStr();
-  // }, [currUserAnswer, userAnswerArray, finalTotalAnsStr]);
-  function makeAnswerStr() {
-    const AnsStr = [];
-    for (let i = 1; i < userAnswerArray.length; i++) {
-      AnsStr.push("B" + String(i) + "=" + userAnswerArray[i]);
+
+  useEffect(() => {
+    window.localStorage.setItem(quest, answer);
+    const newAnswers = [...getAnswerStorage];
+    for (let i = 0; i <= localStorage.length; i++) {
+      newAnswers[i] = localStorage.getItem(i);
+      setGetAnswerStorage(newAnswers);
     }
-    const totalAnsStr = AnsStr.join(" ");
-    setFinalTotalAnsStr(totalAnsStr);
-    console.log(finalTotalAnsStr);
-    return finalTotalAnsStr;
+  }, [quest, answer]);
+  // function checkRadio1(i) {
+  //   if (window.localStorage.getItem(totalQ[pageCount][i].qitemNo)) {
+  //     // 만약 localStorage에 이 질문번호에 대한 value가 있으면
+  //     if (
+  //       window.localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
+  //       totalQ[pageCount][i].answerScore01
+  //     ) {
+  //       return "answer01"; //그 value가 1번이라면 true를 띄운다.
+  //     } else {
+  //       return "answer02"; //값은 있는데 value가 2번이라면
+  //     }
+  //   } else {
+  //     //값조차 없으면
+  //     return false;
+  //   }
+  // }
+
+  function countProgress() {
+    const progressRate = Math.round((window.localStorage.length * 100) / 28);
+    return progressRate;
   }
+
   function printQuestions() {
     const printQuest5 = [];
     if (pageCount === 5) {
@@ -119,7 +127,13 @@ export default function TestPage() {
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore01}
                     onChange={changeHandler}
-                    checked={isChecked}
+                    checked={
+                      localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
+                      totalQ[pageCount][i].answerScore01
+                        ? true
+                        : false
+                    }
+                    // readOnly
                   ></input>
                 </div>
                 <div>
@@ -132,7 +146,13 @@ export default function TestPage() {
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore02}
                     onChange={changeHandler}
-                    checked={isChecked}
+                    checked={
+                      localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
+                      totalQ[pageCount][i].answerScore02
+                        ? true
+                        : false
+                    }
+                    // readOnly
                   ></input>
                 </div>
               </form>
@@ -142,9 +162,6 @@ export default function TestPage() {
       }
     } else if (pageCount <= 4) {
       for (let i = 0; i < 5; i++) {
-        console.log(userAnswerArray[pageCount * 5 + i + 1]);
-        const isChecked =
-          userAnswerArray[pageCount * 5 + i + 1] !== undefined ? true : false;
         if (totalQ && totalQ.length > 0) {
           printQuest5.push(
             <div>
@@ -163,7 +180,13 @@ export default function TestPage() {
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore01}
                     onChange={changeHandler}
-                    checked={isChecked}
+                    checked={
+                      localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
+                      totalQ[pageCount][i].answerScore01
+                        ? true
+                        : false
+                    }
+                    // readOnly
                   ></input>
                 </div>
                 <div>
@@ -176,7 +199,13 @@ export default function TestPage() {
                     name={totalQ[pageCount][i].qitemNo}
                     value={totalQ[pageCount][i].answerScore02}
                     onChange={changeHandler}
-                    checked={isChecked}
+                    checked={
+                      localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
+                      totalQ[pageCount][i].answerScore02
+                        ? true
+                        : false
+                    }
+                    // readOnly
                   ></input>
                 </div>
               </form>
@@ -187,10 +216,11 @@ export default function TestPage() {
     }
     return printQuest5;
   }
+
   return (
     <div>
       <header>검사 진행</header>
-      <h2>0 % 진행 중</h2>
+      <h2>{countProgress()}% 진행 중</h2>
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>

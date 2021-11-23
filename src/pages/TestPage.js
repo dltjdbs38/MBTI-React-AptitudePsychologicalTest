@@ -60,25 +60,14 @@ export default function TestPage() {
 
   //change 이벤트가 일어나면 -> saveStorage를 해라!
 
-  const changeHandler = (e, checked) => {
+  const changeHandler = (e) => {
     window.localStorage.setItem(e.target.name, e.target.value);
     const newAnswers = [...getAnswerStorage];
-    for (let i = 0; i < localStorage.length; i++) {
+    for (let i = 0; i <= localStorage.length; i++) {
       newAnswers[i] = localStorage.getItem(i);
       setGetAnswerStorage(newAnswers);
       console.log(getAnswerStorage);
     }
-    // if (!window.localStorage.getItem(e.target.name)) {
-    //   //없었거나
-    //   saveStorage(e.target.name, e.target.value);
-    // } else {
-    //   if (window.localStorage.getItem(e.target.name) !== e.target.value) {
-    //     //있는데 다른 값이었을 때
-    //     saveStorage(e.target.name, e.target.value);
-    //   } else {
-    //     //값도 있고, 값도 해당 값이라면
-    //   }
-    // }
   };
 
   // function checkRadio1(i) {
@@ -91,22 +80,6 @@ export default function TestPage() {
   //       return "answer01"; //그 value가 1번이라면 true를 띄운다.
   //     } else {
   //       return "answer02"; //값은 있는데 value가 2번이라면
-  //     }
-  //   } else {
-  //     //값조차 없으면
-  //     return false;
-  //   }
-  // }
-  // function checkRadio2(i) {
-  //   if (window.localStorage.getItem(totalQ[pageCount][i].qitemNo)) {
-  //     // 만약 localStorage에 이 질문번호에 대한 value가 있으면
-  //     if (
-  //       window.localStorage.getItem(totalQ[pageCount][i].qitemNo) ===
-  //       totalQ[pageCount][i].answerScore02
-  //     ) {
-  //       return "answer02"; //그 value가 2번이라면 true를 띄운다.
-  //     } else {
-  //       return "answer01"; //값은 있는데 value가 1번이라면
   //     }
   //   } else {
   //     //값조차 없으면
