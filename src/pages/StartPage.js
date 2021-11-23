@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
+import UserInfo, { InfoContext } from "./UserInfo";
 export default function StartPage() {
   const [gender, setGender] = useState();
   const [userName, setUserName] = useState();
   const history = useHistory();
+  const user = useContext(InfoContext);
+  localStorage.clear(); //localstorage 초기화
   return (
     <div>
       <header>서윤의 직업 심리 검사</header>

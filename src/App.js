@@ -6,26 +6,24 @@ import TestPage from "./pages/TestPage";
 import TestExample from "./pages/TestExample";
 import TestResultPage from "./pages/TestResultPage";
 import styled from "styled-components";
-import { Route, Switch, BrowserRouter } from "react-router-dom";
-import { InfoContext } from "./pages/UserInfo";
+import { Route, Switch } from "react-router-dom";
+import UserInfo, { InfoContext } from "./pages/UserInfo";
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <div className="App">
-        <Switch>
-          <Route exact path="/">
-            <StartPage></StartPage>
-          </Route>
-          <Route path="/test_example">
-            <TestExample></TestExample>
-          </Route>
-          <Route path="/test">
-            <TestPage></TestPage>
-          </Route>
-          <Route path="/test_result" component={TestResultPage}></Route>
-        </Switch>
-      </div>
-    </BrowserRouter>
+    <div className="App">
+      <Switch>
+        <Route exact path="/">
+          <StartPage></StartPage>
+        </Route>
+        <Route path="/test_example">
+          <TestExample></TestExample>
+        </Route>
+        <Route path="/test">
+          <TestPage></TestPage>
+        </Route>
+        <Route path="/test_result" component={TestResultPage}></Route>
+      </Switch>
+    </div>
   );
 }
