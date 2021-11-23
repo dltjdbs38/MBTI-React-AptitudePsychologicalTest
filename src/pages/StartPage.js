@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
 import { Link, useHistory } from "react-router-dom";
-import UserInfo, { InfoContext } from "./UserInfo";
+import UserInfo, { UserContext } from "./UserInfo";
 export default function StartPage() {
   const [gender, setGender] = useState();
   const [userName, setUserName] = useState();
   const history = useHistory();
-  const user = useContext(InfoContext);
+  const user = useContext(UserContext);
   localStorage.clear(); //localstorage 초기화
   return (
     <div>
@@ -18,6 +18,8 @@ export default function StartPage() {
             onChange={(e) => {
               setUserName(e.target.value);
               console.log(userName);
+              const newUser = { ...startUser };
+              newUser.name = e.target.value;
             }}
           ></input>
         </>
