@@ -30,7 +30,7 @@ promise2
 
 // 3.resolve, reject함수에 인자(값?) 전달하기
 function fetchData(data){
-    return new Promise((resolve,reject) => {
+    ereturn new Promis((resolve,reject) => {
         if(data.length>0){
             resolve(`${data} are downloading`);
         }
