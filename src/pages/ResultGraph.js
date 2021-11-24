@@ -5,7 +5,6 @@ import { UserContext } from "./UserInfo";
 
 export default function ResultGraph() {
   const [firstResponse, setFirstResponse] = useState("");
-  const [seqKey, setSeqKey] = useState("");
   const context = useContext(UserContext);
   //CORS : Cross Origin Resource Sharing 교차 출처 리소 스 공유
   // 도메인과 포트가 서로 다른 서버로 client를 요청했을 때 브라우저가 보안상 이유로 API를 차단하는 문제. ex client는 8080포트, server는 9000포트일 때.
@@ -45,8 +44,7 @@ export default function ResultGraph() {
     //firstResponse
     console.log(context);
     console.log(firstResponse);
-    console.log(seqKey);
-  }, [firstResponse, seqKey]);
+  }, [firstResponse]);
 
   return (
     <div>
