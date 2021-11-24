@@ -19,7 +19,7 @@ export default function TestPage() {
     async function fetchData() {
       await axios
         .get(
-          "https://www.career.go.kr/inspct/openapi/test/questions?apikey=8611fd29678269e033bf421a0db5f770&q=6"
+          `https://www.career.go.kr/inspct/openapi/test/questions?apikey=${context.apikey}&q=6`
         )
         .then((res) => {
           setSaveData(res.data.RESULT);
