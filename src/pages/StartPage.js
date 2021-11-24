@@ -6,7 +6,7 @@ export default function StartPage() {
   const [userName, setUserName] = useState();
   const history = useHistory();
   const context = useContext(UserContext);
-  localStorage.clear(); //localstorage 초기화
+  // localStorage.clear(); //localstorage 초기화
 
   useEffect(() => {
     context.name = userName;

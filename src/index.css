@@ -51,6 +51,9 @@ table td {
   text-align: center;
   font-size: 20px;
 }
+table tbody table thead {
+  padding: 2px;
+}
 
 /* a {
   text-decoration: none;
