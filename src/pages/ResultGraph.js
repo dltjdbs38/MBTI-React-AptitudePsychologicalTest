@@ -7,7 +7,6 @@ import { Bar } from "react-chartjs-2";
 
 export default function ResultGraph() {
   const context = useContext(UserContext);
-  let graphArr = [];
   let Jobs = [];
   let Majors = [];
   //CORS : Cross Origin Resource Sharing 교차 출처 리소스 공유
@@ -15,10 +14,10 @@ export default function ResultGraph() {
   //나는 지금 백엔드 없이 프론트React만 사용하므로 요청받는 server에서 모든 요청을 허가한다든지 백엔드에 cors 패키지를 설치해 미들웨어로 처리한다든지 할 수 없다.
   useEffect(() => {
     async function asyncCall() {
+      let graphArr = [];
       let seqKey = "";
       let result1 = [];
-      let result3 = [];
-      let originArr = [];
+      let resultObj = [];
       let No1 = "";
       let No2 = "";
       let No1Index = "";
@@ -44,32 +43,41 @@ export default function ResultGraph() {
           console.log("get완료 res:", res);
           result1 = res.data.result.wonScore.split(" "); //['1=3', '2=3', '3=4', '4=3', '5=4', '6=5', '7=5', '8=1', '']
           for (let i = 0; i < result1.length - 1; i++) {
-            originArr.push(result1[i].split("=")[1]); //['3','3','4','3','4','5','5','1']
+            graphArr.push(result1[i].split("=")[1]); //['3','3','4','3','4','5','5','1']
+            let tempObj = { no: "", count: "" };
+            tempObj["no"] = i + 1;
+            tempObj["count"] = result1[i][2];
+            resultObj.push(tempObj);
           }
-          graphArr = originArr;
           console.log("graphArr:", graphArr);
-          result3 = originArr.sort(); //['1','3','3','3','4','4','5','5']
-          console.log("sorted graphArr = result3:", result3);
-          No1 = result3[result3.length - 1]; // '5'
-          No2 = result3[result3.length - 2]; // '5' '4'
-          console.log("No1:", No1, "No2:", No2);
-          for (let i = 0; i < originArr.length; i++) {
-            if (No1 !== No2) {
-              if (originArr[i] === No1) {
-                No1Index = String(i + 1); //3
-              } else if (originArr[i] === No2) {
-                No2Index = String(i + 1); //2
-              }
-            } else {
-              if (originArr[i] === No1) {
-                No1Index = String(i + 1);
-                originArr[i] = "0";
-                result3 = originArr.sort();
-              } else if (originArr[i] === No2) {
-                No2Index = String(i + 1);
-              }
-            }
-          }
+          console.log("resultObj:", resultObj); //[{1:'4'},{2:'5'},{3:'3'}...{8:'1'}]
+          No1 = resultObj.sort(function (a, b) {
+            return a.count - b.count;
+          });
+
+          // result3 = originArr.sort(); //['1','3','3','3','4','4','5','5']
+          // console.log("sorted graphArr = result3:", result3);
+          // No1 = result3[result3.length - 1]; // '5'
+          // No2 = result3[result3.length - 2]; // '5' '4'
+          // console.log("No1:", No1, "No2:", No2);
+          // for (let i = 0; i < originArr.length; i++) {
+          //   if (No1 !== No2) {
+          //     if (originArr[i] === No1) {
+          //       No1Index = String(i + 1); //3
+          //     } else if (originArr[i] === No2) {
+          //       No2Index = String(i + 1); //2
+          //     }
+          //   } else {
+          //     if (originArr[i] === No1) {
+          //       No1Index = String(i + 1);
+          //       originArr[i] = "0";
+          //       result3 = originArr.sort();
+          //     } else if (originArr[i] === No2) {
+          //       No2Index = String(i + 1);
+          //     }
+          //   }
+          // }
+
           NoIndex = [No1Index, No2Index];
           console.log("NoIndex: ", NoIndex);
           return NoIndex;
