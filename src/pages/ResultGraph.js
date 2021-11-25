@@ -7,6 +7,7 @@ import { Bar } from "react-chartjs-2";
 
 export default function ResultGraph() {
   const context = useContext(UserContext);
+  let graphArr = [];
   let Jobs = [];
   let Majors = [];
   //CORS : Cross Origin Resource Sharing 교차 출처 리소스 공유
@@ -14,12 +15,10 @@ export default function ResultGraph() {
   //나는 지금 백엔드 없이 프론트React만 사용하므로 요청받는 server에서 모든 요청을 허가한다든지 백엔드에 cors 패키지를 설치해 미들웨어로 처리한다든지 할 수 없다.
   useEffect(() => {
     async function asyncCall() {
-      let graphArr = [];
       let seqKey = "";
       let result1 = [];
+      let result2 = [];
       let resultObj = [];
-      let No1 = "";
-      let No2 = "";
       let No1Index = "";
       let No2Index = "";
       let NoIndex = [];
@@ -42,45 +41,22 @@ export default function ResultGraph() {
         .then((res) => {
           console.log("get완료 res:", res);
           result1 = res.data.result.wonScore.split(" "); //['1=3', '2=3', '3=4', '4=3', '5=4', '6=5', '7=5', '8=1', '']
-          for (let i = 0; i < result1.length - 1; i++) {
-            graphArr.push(result1[i].split("=")[1]); //['3','3','4','3','4','5','5','1']
-            let tempObj = { no: "", count: "" };
-            tempObj["no"] = i + 1;
-            tempObj["count"] = result1[i][2];
-            resultObj.push(tempObj);
+          result1.pop(); //마지막 하나 뺌 result1 길이 8
+          for (let i = 0; i < result1.length; i++) {
+            graphArr.push(result1[i].split("=")[1]);
           }
           console.log("graphArr:", graphArr);
-          console.log("resultObj:", resultObj); //[{1:'4'},{2:'5'},{3:'3'}...{8:'1'}]
-          No1 = resultObj.sort(function (a, b) {
-            return a.count - b.count;
+
+          result2 = result1.sort(function (a, b) {
+            return a[2] - b[2];
           });
-
-          // result3 = originArr.sort(); //['1','3','3','3','4','4','5','5']
-          // console.log("sorted graphArr = result3:", result3);
-          // No1 = result3[result3.length - 1]; // '5'
-          // No2 = result3[result3.length - 2]; // '5' '4'
-          // console.log("No1:", No1, "No2:", No2);
-          // for (let i = 0; i < originArr.length; i++) {
-          //   if (No1 !== No2) {
-          //     if (originArr[i] === No1) {
-          //       No1Index = String(i + 1); //3
-          //     } else if (originArr[i] === No2) {
-          //       No2Index = String(i + 1); //2
-          //     }
-          //   } else {
-          //     if (originArr[i] === No1) {
-          //       No1Index = String(i + 1);
-          //       originArr[i] = "0";
-          //       result3 = originArr.sort();
-          //     } else if (originArr[i] === No2) {
-          //       No2Index = String(i + 1);
-          //     }
-          //   }
-          // }
-
+          console.log("result2:", result2); //['8=1', '1=3', '3=3', '5=3', '2=4', '4=4', '6=5', '7=5']
+          No1Index = result2[result2.length - 1].split("=")[0]; //문항번호 가져와야되니 앞에 놈
+          No2Index = result2[result2.length - 2].split("=")[0];
           NoIndex = [No1Index, No2Index];
           console.log("NoIndex: ", NoIndex);
-          return NoIndex;
+
+          return graphArr; //['3','3','4','4','5','5','1']
         })
         .catch((err) => {
           console.error(err);
@@ -101,42 +77,40 @@ export default function ResultGraph() {
   //https://www.career.go.kr/inspct/web/psycho/value/report?seq=NTU3MTA5NDE
 
   useEffect(() => {
-    //firstResponse
+    console.log(graphArr);
     console.log(context);
   }, []);
-
-  let data = {
-    type: "bar",
-    data: {
-      labels: [
-        "능력발휘",
-        "자율성",
-        "보수",
-        "안정성",
-        "사회적 인정",
-        "사회봉사",
-        "자기계발",
-        "창의성",
-      ],
-      datasets: [
-        {
-          label: "직업가치관 결과",
-          backgroundColor: "rgba(0, 99, 255, 0.27)",
-          borderColor: "rgba(0, 99, 255, 0.72)",
-          borderWidth: 1,
-          hoverBackgroundColor: "rgba(0, 99, 255, 0.427)",
-          hoverBorderColor: "rgba(0, 99, 255, 0.72)",
-          data: ["3", "3", "4", "3", "4", "5", "5", "1"],
-        },
-      ],
-    },
-  };
 
   const canvasDom = useRef(null);
   useEffect(() => {
     const ctx = canvasDom.current.getContext("2d");
     console.log(ctx);
-    let chart = new Chart(ctx, data);
+    let chart = new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: [
+          "능력발휘",
+          "자율성",
+          "보수",
+          "안정성",
+          "사회적 인정",
+          "사회봉사",
+          "자기계발",
+          "창의성",
+        ],
+        datasets: [
+          {
+            label: "직업가치관 결과",
+            backgroundColor: "rgba(0, 99, 255, 0.27)",
+            borderColor: "rgba(0, 99, 255, 0.72)",
+            borderWidth: 1,
+            hoverBackgroundColor: "rgba(0, 99, 255, 0.427)",
+            hoverBorderColor: "rgba(0, 99, 255, 0.72)",
+            data: ["3", "3", "4", "3", "4", "5", "5", "1"],
+          },
+        ],
+      },
+    });
   }, []);
   return (
     <div>
