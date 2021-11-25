@@ -11,6 +11,8 @@ export default function ResultGraph() {
   // const latestGraphArr = useRef(graphArr);
   const [jobs, setJobs] = useState([]);
   const [majors, setMajors] = useState([]);
+  let jobArr = [];
+  let majorArr = [];
   // const [seqIndex, setSeqIndex] = useState([]);
   //CORS : Cross Origin Resource Sharing 교차 출처 리소스 공유
   // 도메인과 포트가 서로 다른 서버로 client를 요청했을 때 브라우저가 보안상 이유로 API를 차단하는 문제. ex client는 8080포트, server는 9000포트일 때.
@@ -83,12 +85,17 @@ export default function ResultGraph() {
         )
         .then((res) => {
           console.log("get완료 종사자 평균 학력별: ", res);
+          //setJobs 버전
           const newJobs = [...jobs];
           for (let i = 0; i < res.data.length; i++) {
             newJobs.push(res.data[i]);
           }
           console.log("newJobs:", newJobs);
           setJobs(newJobs);
+          //일반 변수 버전
+          for (let i = 0; i < res.data.length; i++) {
+            jobArr.push(res.data[i]);
+          }
         })
         .catch((err) => {
           console.error(err);
@@ -100,29 +107,53 @@ export default function ResultGraph() {
         )
         .then((res) => {
           console.log("get완료 종사자 평균 전공별:", res);
+          //setMajors 버전
           const newMajors = [...majors];
           for (let i = 0; i < res.data.length; i++) {
             newMajors.push(res.data[i]);
           }
           console.log("newMajors:", newMajors);
           setMajors(newMajors);
-        });
+          //일반 변수 버전
+          for (let i = 0; i < res.data.length; i++) {
+            majorArr.push(res.data[i]);
+          }
+        })
+        .catch((err) => console.error(err));
     }
     asyncCall();
   }, []);
   //https://www.career.go.kr/inspct/web/psycho/value/report?seq=NTU3MTA5NDE
 
-  function printJobs1() {
-    const printJobs = [];
-    return 0;
+  function printJobs() {
+    console.log("jobArr:", jobArr);
+    const HighJobs = [];
+    const UnivJobs = [];
+    const LabJobs = [];
+    let printSchoolJobs = [];
+    for (let i = 0; i < jobs.length; i++) {
+      if (jobs[i][2] === 2) {
+        HighJobs.push(jobs[i][1]); //['경찰관','레크리에이션지도자','마술사']
+      } else if (jobs[i][2] === 4) {
+        UnivJobs.push(jobs[i][1]);
+      } else if (jobs[i][2] === 5) {
+        LabJobs.push(jobs[i][1]);
+      }
+    }
+    const HighJobsStr = HighJobs.join(" / "); //'경찰관 / 레크리에이션지도자 / 마술사
+    const UnivJobsStr = UnivJobs.join(" / ");
+    const LabJobsStr = LabJobs.join(" / ");
+    return [HighJobsStr, UnivJobsStr, LabJobsStr];
   }
 
   // 5. state들 출력용 useEffect
   useEffect(() => {
+    console.log("-------state changed----------");
     console.log(context);
     console.log("graphArr:", graphArr);
     console.log("jobs:", jobs);
     console.log("majors:", majors);
+    console.log("-------state changed----------");
     // console.log("seqIndex:", seqIndex);
   }, [graphArr, jobs, majors]);
 
@@ -201,8 +232,16 @@ export default function ResultGraph() {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>tbody 학력</td>
-                        <td>tbody 직업</td>
+                        <td>고등학교 졸업자 </td>
+                        <td>{printJobs()[0]}</td>
+                      </tr>
+                      <tr>
+                        <td>대학교 졸업자 </td>
+                        <td>{printJobs()[1]}</td>
+                      </tr>
+                      <tr>
+                        <td>대학원 졸업자 </td>
+                        <td>{printJobs()[2]}</td>
                       </tr>
                     </tbody>
                   </table>
