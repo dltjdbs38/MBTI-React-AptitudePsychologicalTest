@@ -11,6 +11,7 @@ export default function ResultGraph() {
   // const latestGraphArr = useRef(graphArr);
   const [jobs, setJobs] = useState([]);
   const [majors, setMajors] = useState([]);
+
   let jobArr = [];
   let majorArr = [];
   // const [seqIndex, setSeqIndex] = useState([]);
@@ -34,7 +35,7 @@ export default function ResultGraph() {
           context
         )
         .then((res) => {
-          // console.log(res);
+          console.log("1번째 post완료 응답 ", res);
           seqKey = res.data.RESULT.url.split("seq=")[1];
           console.log(seqKey);
           return seqKey;
@@ -45,7 +46,7 @@ export default function ResultGraph() {
       const reloadData = await axios
         .get(`https://www.career.go.kr/inspct/api/psycho/report?seq=${seqKey}`)
         .then((res) => {
-          console.log("get완료 res:", res);
+          console.log("2번째 get완료 res:", res);
           result1 = res.data.result.wonScore.split(" "); //['1=3', '2=3', '3=4', '4=3', '5=4', '6=5', '7=5', '8=1', '']
           result1.pop(); //마지막 하나 뺌 result1 길이 8
 
@@ -84,7 +85,7 @@ export default function ResultGraph() {
           `https://inspct.career.go.kr/inspct/api/psycho/value/jobs?no1=${NoIndex[0]}&no2=${NoIndex[1]}`
         )
         .then((res) => {
-          console.log("get완료 종사자 평균 학력별: ", res);
+          console.log("3번째 get완료 종사자 평균 학력별: ", res);
           //setJobs 버전
           const newJobs = [...jobs];
           for (let i = 0; i < res.data.length; i++) {
@@ -106,7 +107,7 @@ export default function ResultGraph() {
           `https://inspct.career.go.kr/inspct/api/psycho/value/majors?no1=${NoIndex[0]}&no2=${NoIndex[1]}`
         )
         .then((res) => {
-          console.log("get완료 종사자 평균 전공별:", res);
+          console.log("4번째 get완료 종사자 평균 전공별:", res);
           //setMajors 버전
           const newMajors = [...majors];
           for (let i = 0; i < res.data.length; i++) {
@@ -126,24 +127,76 @@ export default function ResultGraph() {
   //https://www.career.go.kr/inspct/web/psycho/value/report?seq=NTU3MTA5NDE
 
   function printJobs() {
-    console.log("jobArr:", jobArr);
+    console.log("printJobs start - jobs:", jobs);
     const HighJobs = [];
+    const SpeciJobs = [];
     const UnivJobs = [];
     const LabJobs = [];
-    let printSchoolJobs = [];
     for (let i = 0; i < jobs.length; i++) {
-      if (jobs[i][2] === 2) {
+      if (jobs[i][2] <= 2) {
         HighJobs.push(jobs[i][1]); //['경찰관','레크리에이션지도자','마술사']
+      } else if (jobs[i][2] === 3) {
+        SpeciJobs.push(jobs[i][1]);
       } else if (jobs[i][2] === 4) {
         UnivJobs.push(jobs[i][1]);
-      } else if (jobs[i][2] === 5) {
+      } else if (jobs[i][2] >= 5) {
         LabJobs.push(jobs[i][1]);
       }
     }
     const HighJobsStr = HighJobs.join(" / "); //'경찰관 / 레크리에이션지도자 / 마술사
+    const SpeciJobsStr = SpeciJobs.join(" / ");
     const UnivJobsStr = UnivJobs.join(" / ");
     const LabJobsStr = LabJobs.join(" / ");
-    return [HighJobsStr, UnivJobsStr, LabJobsStr];
+    return [HighJobsStr, SpeciJobsStr, UnivJobsStr, LabJobsStr];
+  }
+
+  function printJobs2() {
+    console.log("printJobs2 start - majors:", majors);
+    const Jobs0 = [];
+    const Jobs1 = [];
+    const Jobs2 = [];
+    const Jobs3 = [];
+    const Jobs4 = [];
+    const Jobs5 = [];
+    const Jobs6 = [];
+    const Jobs7 = [];
+    for (let i = 0; i < majors.length; i++) {
+      if (majors[i][2] === 0) {
+        Jobs0.push(majors[i][1]); //['경찰관','레크리에이션지도자','마술사']
+      } else if (majors[i][2] === 1) {
+        Jobs1.push(majors[i][1]);
+      } else if (majors[i][2] === 2) {
+        Jobs2.push(majors[i][1]);
+      } else if (majors[i][2] === 3) {
+        Jobs3.push(majors[i][1]);
+      } else if (majors[i][2] === 4) {
+        Jobs4.push(majors[i][1]);
+      } else if (majors[i][2] === 5) {
+        Jobs5.push(majors[i][1]);
+      } else if (majors[i][2] === 6) {
+        Jobs6.push(majors[i][1]);
+      } else if (majors[i][2] === 7) {
+        Jobs7.push(majors[i][1]);
+      }
+    }
+    const JobsStr0 = Jobs0.join(" / "); //'경찰관 / 레크리에이션지도자 / 마술사
+    const JobsStr1 = Jobs1.join(" / ");
+    const JobsStr2 = Jobs2.join(" / ");
+    const JobsStr3 = Jobs3.join(" / ");
+    const JobsStr4 = Jobs4.join(" / ");
+    const JobsStr5 = Jobs5.join(" / ");
+    const JobsStr6 = Jobs6.join(" / ");
+    const JobsStr7 = Jobs7.join(" / ");
+    return [
+      JobsStr0,
+      JobsStr1,
+      JobsStr2,
+      JobsStr3,
+      JobsStr4,
+      JobsStr5,
+      JobsStr6,
+      JobsStr7,
+    ];
   }
 
   // 5. state들 출력용 useEffect
@@ -236,12 +289,16 @@ export default function ResultGraph() {
                         <td>{printJobs()[0]}</td>
                       </tr>
                       <tr>
-                        <td>대학교 졸업자 </td>
+                        <td>전문대학교 졸업자 </td>
                         <td>{printJobs()[1]}</td>
                       </tr>
                       <tr>
-                        <td>대학원 졸업자 </td>
+                        <td>대학교 졸업자 </td>
                         <td>{printJobs()[2]}</td>
+                      </tr>
+                      <tr>
+                        <td>대학원 졸업자 </td>
+                        <td>{printJobs()[3]}</td>
                       </tr>
                     </tbody>
                   </table>
@@ -263,8 +320,36 @@ export default function ResultGraph() {
                     </thead>
                     <tbody>
                       <tr>
-                        <td>tbody 전공</td>
-                        <td>tbody 직업</td>
+                        <td>계열무관</td>
+                        <td>{printJobs2()[0]}</td>
+                      </tr>
+                      <tr>
+                        <td>인문</td>
+                        <td>{printJobs2()[1]}</td>
+                      </tr>
+                      <tr>
+                        <td>사회</td>
+                        <td>{printJobs2()[2]}</td>
+                      </tr>
+                      <tr>
+                        <td>교육</td>
+                        <td>{printJobs2()[3]}</td>
+                      </tr>
+                      <tr>
+                        <td>공학</td>
+                        <td>{printJobs2()[4]}</td>
+                      </tr>
+                      <tr>
+                        <td>자연</td>
+                        <td>{printJobs2()[5]}</td>
+                      </tr>
+                      <tr>
+                        <td>의학</td>
+                        <td>{printJobs2()[6]}</td>
+                      </tr>
+                      <tr>
+                        <td>예체능</td>
+                        <td>{printJobs2()[7]}</td>
                       </tr>
                     </tbody>
                   </table>
