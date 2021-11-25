@@ -215,7 +215,7 @@ export default function TestPage() {
           ? `${countProgress()}% 진행 중`
           : `${countProgress()}% 진행 완료`}
       </h2>
-      <ProgressBar animated now={60} />
+      <ProgressBar animated now={countProgress()} />
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>

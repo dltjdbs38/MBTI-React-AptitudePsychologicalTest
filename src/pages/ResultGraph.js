@@ -8,6 +8,7 @@ import { Bar } from "react-chartjs-2";
 export default function ResultGraph() {
   const context = useContext(UserContext);
   const [graphArr, setGraphArr] = useState([]);
+  // const latestGraphArr = useRef(graphArr);
   const [jobs, setJobs] = useState([]);
   const [majors, setMajors] = useState([]);
   // const [seqIndex, setSeqIndex] = useState([]);
@@ -17,12 +18,14 @@ export default function ResultGraph() {
   useEffect(() => {
     async function asyncCall() {
       let seqKey = "";
+      //no1 no2 알아내기 위한 변수
       let result1 = [];
       let result2 = [];
       let resultObj = [];
       let No1Index = "";
       let No2Index = "";
       let NoIndex = [];
+
       const uploadData = await axios
         .post(
           `http://www.career.go.kr/inspct/openapi/test/report?apikey=${context.apikey}&qestrnSeq=${context.qestrnSeq}`,
@@ -73,33 +76,61 @@ export default function ResultGraph() {
         .catch((err) => {
           console.error(err);
         });
+      // 3. 종사자 평균 학력별 get
       const requestJobs = await axios
         .get(
           `https://inspct.career.go.kr/inspct/api/psycho/value/jobs?no1=${NoIndex[0]}&no2=${NoIndex[1]}`
         )
         .then((res) => {
-          console.log("get완료 종사자 평균학력: ", res);
+          console.log("get완료 종사자 평균 학력별: ", res);
           const newJobs = [...jobs];
+          for (let i = 0; i < res.data.length; i++) {
+            newJobs.push(res.data[i]);
+          }
+          console.log("newJobs:", newJobs);
+          setJobs(newJobs);
         })
         .catch((err) => {
           console.error(err);
+        });
+      // 4. 종사자 평균 전공별 get
+      const requestMajors = await axios
+        .get(
+          `https://inspct.career.go.kr/inspct/api/psycho/value/majors?no1=${NoIndex[0]}&no2=${NoIndex[1]}`
+        )
+        .then((res) => {
+          console.log("get완료 종사자 평균 전공별:", res);
+          const newMajors = [...majors];
+          for (let i = 0; i < res.data.length; i++) {
+            newMajors.push(res.data[i]);
+          }
+          console.log("newMajors:", newMajors);
+          setMajors(newMajors);
         });
     }
     asyncCall();
   }, []);
   //https://www.career.go.kr/inspct/web/psycho/value/report?seq=NTU3MTA5NDE
 
-  // 3. state들 출력용 useEffect
+  function printJobs1() {
+    const printJobs = [];
+    return 0;
+  }
+
+  // 5. state들 출력용 useEffect
   useEffect(() => {
     console.log(context);
     console.log("graphArr:", graphArr);
+    console.log("jobs:", jobs);
+    console.log("majors:", majors);
     // console.log("seqIndex:", seqIndex);
-  }, [graphArr]);
+  }, [graphArr, jobs, majors]);
 
   const canvasDom = useRef(null);
   useEffect(() => {
+    // latestGraphArr.current = graphArr;
     const ctx = canvasDom.current.getContext("2d");
-    console.log(ctx);
+    // console.log("ctx", ctx);
     let chart = new Chart(ctx, {
       type: "bar",
       data: {
@@ -121,8 +152,8 @@ export default function ResultGraph() {
             borderWidth: 1,
             hoverBackgroundColor: "rgba(0, 99, 255, 0.427)",
             hoverBorderColor: "rgba(0, 99, 255, 0.72)",
-            // data: ["3", "3", "4", "3", "4", "5", "5", "1"],
-            data: graphArr,
+            data: ["3", "3", "4", "3", "4", "5", "5", "1"],
+            // data: graphArr,
           },
         ],
       },
@@ -150,7 +181,7 @@ export default function ResultGraph() {
       <table>
         <thead>직업가치관 결과</thead>
         <tbody>
-          <canvas ref={canvasDom}></canvas>
+          <canvas id="chart" ref={canvasDom}></canvas>
         </tbody>
       </table>
       <table>
@@ -168,7 +199,12 @@ export default function ResultGraph() {
                         <th>직업</th>
                       </tr>
                     </thead>
-                    <tbody>tbody 1 !</tbody>
+                    <tbody>
+                      <tr>
+                        <td>tbody 학력</td>
+                        <td>tbody 직업</td>
+                      </tr>
+                    </tbody>
                   </table>
                 </td>
               </tr>
@@ -186,7 +222,12 @@ export default function ResultGraph() {
                         <th>직업</th>
                       </tr>
                     </thead>
-                    <tbody>tbody 2 !</tbody>
+                    <tbody>
+                      <tr>
+                        <td>tbody 전공</td>
+                        <td>tbody 직업</td>
+                      </tr>
+                    </tbody>
                   </table>
                 </td>
               </tr>
