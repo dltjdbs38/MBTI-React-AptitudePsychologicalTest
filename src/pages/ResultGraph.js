@@ -95,8 +95,7 @@ export default function ResultGraph() {
   useEffect(() => {
     //firstResponse
     console.log(context);
-    console.log(firstResponse);
-  }, [firstResponse]);
+  }, []);
 
   let data = {
     type: "bar",
