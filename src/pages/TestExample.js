@@ -12,7 +12,30 @@ export default function TestExample() {
       </p>
       <h2>0% 진행 중</h2>
       <div>현재 페이지는 0 입니다.</div>
-      <div>~~~~여기에 예시 질문 넣으삼~~~</div>
+      <div>
+        <h4>1번. 두 개 가치 중에 자신에게 더 중요한 가치를 선택하세요.</h4>
+        <form>
+          <div>
+            <p>능력발휘 : 직업을 통해 자신의 능력을 발휘하는 것입니다.</p>
+            <input
+              type="radio"
+              value="1"
+              // readOnly
+            ></input>
+          </div>
+          <div>
+            <p>
+              자율성 : 일하는 시간과 방식에 대해서 스스로 결정할 수 있는
+              것입니다.
+            </p>
+            <input
+              type="radio"
+              value="2"
+              // readOnly
+            ></input>
+          </div>
+        </form>
+      </div>
       <Link to="/test">
         <button>검사시작</button>
       </Link>
