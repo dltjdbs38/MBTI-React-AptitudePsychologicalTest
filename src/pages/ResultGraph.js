@@ -12,7 +12,7 @@ export default function ResultGraph() {
   const [jobs, setJobs] = useState([]);
   const [majors, setMajors] = useState([]);
   const [endTime, setEndTime] = useState("");
-
+  let ansArr = [];
   let jobArr = [];
   let majorArr = [];
   // const [seqIndex, setSeqIndex] = useState([]);
