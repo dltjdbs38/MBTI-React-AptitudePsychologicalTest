@@ -2,15 +2,15 @@ import { useState, useContext, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import UserInfo, { UserContext } from "./UserInfo";
 export default function StartPage() {
-  const [gender, setGender] = useState();
-  const [userName, setUserName] = useState();
+  const [gender, setGender] = useState("");
+  const [userName, setUserName] = useState("");
   const history = useHistory();
   const context = useContext(UserContext);
   // localStorage.clear(); //localstorage 초기화
 
   useEffect(() => {
     context.name = userName;
-    // delete context.answer;
+    // delete context.answer; //답안 지우기 - 꼭 다시 하기!!
     context.gender = gender;
     console.log(context);
     console.log(gender);
@@ -56,12 +56,14 @@ export default function StartPage() {
         </>
         <br />
         <button
+          type="button"
           onClick={() => {
             history.push({
               pathname: "/test_example",
               state: { userName: userName, gender: gender },
             });
           }}
+          disabled={userName.length <= 0 || gender.length <= 0}
         >
           검사시작
         </button>

@@ -1,6 +1,6 @@
 import axios from "axios";
 import React, { useState, useRef, useEffect, useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, Link } from "react-router-dom";
 import { UserContext } from "./UserInfo";
 import Chart from "chart.js/auto";
 import { Bar } from "react-chartjs-2";
@@ -11,6 +11,7 @@ export default function ResultGraph() {
   // const latestGraphArr = useRef(graphArr);
   const [jobs, setJobs] = useState([]);
   const [majors, setMajors] = useState([]);
+  const [endtime, setEndTime] = useState("");
 
   let jobArr = [];
   let majorArr = [];
@@ -47,6 +48,7 @@ export default function ResultGraph() {
         .get(`https://www.career.go.kr/inspct/api/psycho/report?seq=${seqKey}`)
         .then((res) => {
           console.log("2번째 get완료 res:", res);
+          setEndTime(res.data.result.endDtm.split("T")[0]);
           result1 = res.data.result.wonScore.split(" "); //['1=3', '2=3', '3=4', '4=3', '5=4', '6=5', '7=5', '8=1', '']
           result1.pop(); //마지막 하나 뺌 result1 길이 8
 
@@ -258,7 +260,7 @@ export default function ResultGraph() {
           <tr>
             <td>{context.name}</td>
             <td>{context.gender === "100323" ? "남" : "여"}</td>
-            <td>{context.startDtm}</td>
+            <td>{endtime}</td>
           </tr>
         </tbody>
       </table>
@@ -359,6 +361,9 @@ export default function ResultGraph() {
           </table>
         </tbody>
       </table>
+      <Link to="/">
+        <button>다시 검사하기</button>
+      </Link>
     </div>
   );
 }
