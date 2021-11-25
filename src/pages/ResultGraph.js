@@ -7,9 +7,10 @@ import { Bar } from "react-chartjs-2";
 
 export default function ResultGraph() {
   const context = useContext(UserContext);
-  let graphArr = [];
-  let Jobs = [];
-  let Majors = [];
+  const [graphArr, setGraphArr] = useState([]);
+  const [jobs, setJobs] = useState([]);
+  const [majors, setMajors] = useState([]);
+  // const [seqIndex, setSeqIndex] = useState([]);
   //CORS : Cross Origin Resource Sharing 교차 출처 리소스 공유
   // 도메인과 포트가 서로 다른 서버로 client를 요청했을 때 브라우저가 보안상 이유로 API를 차단하는 문제. ex client는 8080포트, server는 9000포트일 때.
   //나는 지금 백엔드 없이 프론트React만 사용하므로 요청받는 server에서 모든 요청을 허가한다든지 백엔드에 cors 패키지를 설치해 미들웨어로 처리한다든지 할 수 없다.
@@ -42,10 +43,14 @@ export default function ResultGraph() {
           console.log("get완료 res:", res);
           result1 = res.data.result.wonScore.split(" "); //['1=3', '2=3', '3=4', '4=3', '5=4', '6=5', '7=5', '8=1', '']
           result1.pop(); //마지막 하나 뺌 result1 길이 8
+
+          // 1. setGraphArr
+          const newGraphArr = [...graphArr];
           for (let i = 0; i < result1.length; i++) {
-            graphArr.push(result1[i].split("=")[1]);
+            newGraphArr.push(result1[i].split("=")[1]);
           }
-          console.log("graphArr:", graphArr);
+          setGraphArr(newGraphArr);
+          console.log("newGraphArr:", newGraphArr); //['3','3','4','4','5','5','1']
 
           result2 = result1.sort(function (a, b) {
             return a[2] - b[2]; //오름차순 return 1, -1, 0
@@ -54,9 +59,16 @@ export default function ResultGraph() {
           No1Index = result2[result2.length - 1].split("=")[0]; //문항번호 가져와야되니 앞에 놈
           No2Index = result2[result2.length - 2].split("=")[0];
           NoIndex = [No1Index, No2Index];
-          console.log("NoIndex: ", NoIndex);
+          console.log("NoIndex:", NoIndex);
 
-          return graphArr; //['3','3','4','4','5','5','1']
+          // 2. setSeqIndex
+          // const newSeqIndex = [...seqIndex];
+          // newSeqIndex.push(result2[result2.length - 1].split("=")[0]);
+          // newSeqIndex.push(result2[result2.length - 2].split("=")[0]);
+          // console.log("newSeqIndex: ", newSeqIndex);
+          // setSeqIndex(newSeqIndex);
+
+          // return seqIndex;
         })
         .catch((err) => {
           console.error(err);
@@ -67,6 +79,7 @@ export default function ResultGraph() {
         )
         .then((res) => {
           console.log("get완료 종사자 평균학력: ", res);
+          const newJobs = [...jobs];
         })
         .catch((err) => {
           console.error(err);
@@ -76,10 +89,12 @@ export default function ResultGraph() {
   }, []);
   //https://www.career.go.kr/inspct/web/psycho/value/report?seq=NTU3MTA5NDE
 
+  // 3. state들 출력용 useEffect
   useEffect(() => {
-    // console.log(graphArr);
     console.log(context);
-  }, []);
+    console.log("graphArr:", graphArr);
+    // console.log("seqIndex:", seqIndex);
+  }, [graphArr]);
 
   const canvasDom = useRef(null);
   useEffect(() => {
@@ -106,7 +121,8 @@ export default function ResultGraph() {
             borderWidth: 1,
             hoverBackgroundColor: "rgba(0, 99, 255, 0.427)",
             hoverBorderColor: "rgba(0, 99, 255, 0.72)",
-            data: ["3", "3", "4", "3", "4", "5", "5", "1"],
+            // data: ["3", "3", "4", "3", "4", "5", "5", "1"],
+            data: graphArr,
           },
         ],
       },
