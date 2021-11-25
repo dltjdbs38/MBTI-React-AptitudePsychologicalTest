@@ -48,7 +48,7 @@ export default function ResultGraph() {
           console.log("graphArr:", graphArr);
 
           result2 = result1.sort(function (a, b) {
-            return a[2] - b[2];
+            return a[2] - b[2]; //오름차순 return 1, -1, 0
           });
           console.log("result2:", result2); //['8=1', '1=3', '3=3', '5=3', '2=4', '4=4', '6=5', '7=5']
           No1Index = result2[result2.length - 1].split("=")[0]; //문항번호 가져와야되니 앞에 놈
@@ -77,7 +77,7 @@ export default function ResultGraph() {
   //https://www.career.go.kr/inspct/web/psycho/value/report?seq=NTU3MTA5NDE
 
   useEffect(() => {
-    console.log(graphArr);
+    // console.log(graphArr);
     console.log(context);
   }, []);
 
