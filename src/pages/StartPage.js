@@ -6,11 +6,11 @@ export default function StartPage() {
   const [userName, setUserName] = useState("");
   const history = useHistory();
   const context = useContext(UserContext);
-  // localStorage.clear(); //localstorage 초기화
+  localStorage.clear(); //localstorage 초기화
 
   useEffect(() => {
     context.name = userName;
-    // delete context.answer; //답안 지우기 - 꼭 다시 하기!!
+    delete context.answer; //답안 지우기 - 꼭 다시 하기!!
     context.gender = gender;
     console.log(context);
     console.log(gender);
@@ -55,18 +55,29 @@ export default function StartPage() {
           ></input>
         </>
         <br />
-        <button
-          type="button"
-          onClick={() => {
-            history.push({
-              pathname: "/test_example",
-              state: { userName: userName, gender: gender },
-            });
-          }}
-          disabled={userName.length <= 0 || gender.length <= 0}
-        >
-          검사시작
-        </button>
+        {userName.length > 0 && gender.length > 0 ? (
+          <button
+            type="button"
+            onClick={() => {
+              history.push({
+                pathname: "/test_example",
+                state: { userName: userName, gender: gender },
+              });
+            }}
+          >
+            검사시작
+          </button>
+        ) : (
+          <button
+            disabled
+            style={{
+              backgroundColor: "rgba(30, 143, 255, 0.417)",
+              color: "#eee",
+            }}
+          >
+            검사시작
+          </button>
+        )}
       </body>
     </div>
   );

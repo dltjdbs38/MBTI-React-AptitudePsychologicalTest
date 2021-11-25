@@ -219,9 +219,23 @@ export default function TestPage() {
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>
-      <button onClick={NextPage}>
-        {pageCount === 5 ? "결과보기" : "다음"}
-      </button>
+      {/* 지금 localStorage에 있는 갯수랑 5,10,15,20,25랑 같거나 || 28개랑 같으면 넘어가기 */}
+      {localStorage.length === (pageCount + 1) * 5 ||
+      localStorage.length === saveData.length ? (
+        <button onClick={NextPage}>
+          {pageCount === 5 ? "결과보기" : "다음"}
+        </button>
+      ) : (
+        <button
+          disabled
+          style={{
+            backgroundColor: "rgba(30, 143, 255, 0.417)",
+            color: "#eee",
+          }}
+        >
+          {pageCount === 5 ? "결과보기" : "다음"}
+        </button>
+      )}
     </div>
   );
 }
