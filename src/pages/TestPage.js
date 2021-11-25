@@ -103,10 +103,10 @@ export default function TestPage() {
         if (totalQ && totalQ.length > 0) {
           printQuest5.push(
             <div>
-              <h3>
+              <h4>
                 {totalQ[pageCount][i].qitemNo}번.{" "}
                 {totalQ[pageCount][i].question}
-              </h3>
+              </h4>
               <form>
                 <div>
                   <p>
@@ -156,10 +156,10 @@ export default function TestPage() {
         if (totalQ && totalQ.length > 0) {
           printQuest5.push(
             <div>
-              <h3>
+              <h4>
                 {totalQ[pageCount][i].qitemNo}번.{" "}
                 {totalQ[pageCount][i].question}
-              </h3>
+              </h4>
               <form>
                 <div>
                   <p>
@@ -215,7 +215,7 @@ export default function TestPage() {
           ? `${countProgress()}% 진행 중`
           : `${countProgress()}% 진행 완료`}
       </h2>
-      {/* <ProgressBar animated now={60} /> */}
+      <ProgressBar animated now={60} />
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>
