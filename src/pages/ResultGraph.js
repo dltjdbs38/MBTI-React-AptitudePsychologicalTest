@@ -11,7 +11,7 @@ export default function ResultGraph() {
   // const latestGraphArr = useRef(graphArr);
   const [jobs, setJobs] = useState([]);
   const [majors, setMajors] = useState([]);
-  const [endtime, setEndTime] = useState("");
+  const [endTime, setEndTime] = useState("");
 
   let jobArr = [];
   let majorArr = [];
@@ -260,7 +260,7 @@ export default function ResultGraph() {
           <tr>
             <td>{context.name}</td>
             <td>{context.gender === "100323" ? "남" : "여"}</td>
-            <td>{endtime}</td>
+            <td>{endTime}</td>
           </tr>
         </tbody>
       </table>
