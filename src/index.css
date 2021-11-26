@@ -1,24 +1,23 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;1,600&family=IBM+Plex+Sans+KR&family=Nunito:wght@600&display=swap");
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
 }
 
 header {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   font-weight: bold;
   font-size: 30px;
   color: darkblue;
 }
 
-button {
+/* button {
   padding: 8px;
   font-weight: bold;
   font-size: 12px;
@@ -28,23 +27,27 @@ button {
   padding: 9px 14px;
   color: #fff;
   background-color: dodgerblue;
-}
+} */
 
 .off td {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   background: #eee;
   color: #ccc;
 }
 table {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   border-collapse: collapse;
   width: 60%;
   margin-left: auto;
   margin-right: auto;
 }
 table thead {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   font-size: 20px;
   font-weight: bold;
 }
 table td {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   width: 25%;
   height: 70px;
   border: 1px solid #ccc;

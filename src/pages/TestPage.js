@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "./UserInfo";
 import ProgressBar from "react-bootstrap/ProgressBar";
+import { Button } from "react-bootstrap";
 
 export default function TestPage() {
   const context = useContext(UserContext); //useContext(컨텍스트 이름 파일명X)를 쓰면 <.Consumer> 를 안 감싸줘도 됨
@@ -100,7 +101,7 @@ export default function TestPage() {
       for (let i = 0; i < totalQ[pageCount].length; i++) {
         if (totalQ && totalQ.length > 0) {
           printQuest5.push(
-            <div>
+            <div className="testPage">
               <h4>
                 {totalQ[pageCount][i].qitemNo}번.{" "}
                 {totalQ[pageCount][i].question}
@@ -153,7 +154,7 @@ export default function TestPage() {
       for (let i = 0; i < 5; i++) {
         if (totalQ && totalQ.length > 0) {
           printQuest5.push(
-            <div>
+            <div className="testPage">
               <h4>
                 {totalQ[pageCount][i].qitemNo}번.{" "}
                 {totalQ[pageCount][i].question}
@@ -216,15 +217,20 @@ export default function TestPage() {
       <ProgressBar animated now={countProgress()} />
       <div>현재 페이지는 {pageCount}입니다.</div>
       <div className="question_block">{printQuestions()}</div>
-      <button onClick={PrevPage}>이전</button>
+      <Button variant="primary" size="lg" type="button" onClick={PrevPage}>
+        이전
+      </Button>{" "}
       {/* 지금 localStorage에 있는 갯수랑 5,10,15,20,25랑 크거나 같거나 || 28개랑 같으면 넘어가기 */}
       {localStorage.length >= (pageCount + 1) * 5 ||
       localStorage.length === saveData.length ? (
-        <button onClick={NextPage}>
+        <Button variant="primary" size="lg" type="button" onClick={NextPage}>
           {pageCount === 5 ? "결과보기" : "다음"}
-        </button>
+        </Button>
       ) : (
-        <button
+        <Button
+          variant="primary"
+          size="lg"
+          type="button"
           disabled
           style={{
             backgroundColor: "rgba(30, 143, 255, 0.417)",
@@ -232,7 +238,7 @@ export default function TestPage() {
           }}
         >
           {pageCount === 5 ? "결과보기" : "다음"}
-        </button>
+        </Button>
       )}
     </div>
   );

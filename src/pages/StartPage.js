@@ -1,16 +1,17 @@
 import { useState, useContext, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import UserInfo, { UserContext } from "./UserInfo";
+import { Button } from "react-bootstrap";
 export default function StartPage() {
   const [gender, setGender] = useState("");
   const [userName, setUserName] = useState("");
   const history = useHistory();
   const context = useContext(UserContext);
-  localStorage.clear(); //localstorage 초기화
+  // localStorage.clear(); //localstorage 초기화
 
   useEffect(() => {
     context.name = userName;
-    delete context.answer; //답안 지우기 - 꼭 다시 하기!!
+    //delete context.answer; //답안 지우기 - 꼭 다시 하기!!
     context.gender = gender;
     console.log(context);
     console.log(gender);
@@ -18,11 +19,11 @@ export default function StartPage() {
   }, [userName, gender]);
 
   return (
-    <div>
-      <header>서윤의 직업 심리 검사</header>
+    <div className="startPage">
+      <header>서윤 직업 심리 검사</header>
       <body>
         <>
-          이름
+          이름{" "}
           <input
             placeholder="이름을 입력하세요."
             onChange={(e) => {
@@ -42,7 +43,7 @@ export default function StartPage() {
               console.log(gender);
             }}
             checked={gender === "100323" ? true : false}
-          ></input>
+          ></input>{" "}
           여
           <input
             type="radio"
@@ -56,7 +57,9 @@ export default function StartPage() {
         </>
         <br />
         {userName.length > 0 && gender.length > 0 ? (
-          <button
+          <Button
+            variant="primary"
+            size="lg"
             type="button"
             onClick={() => {
               history.push({
@@ -66,9 +69,11 @@ export default function StartPage() {
             }}
           >
             검사시작
-          </button>
+          </Button>
         ) : (
-          <button
+          <Button
+            variant="primary"
+            size="lg"
             disabled
             style={{
               backgroundColor: "rgba(30, 143, 255, 0.417)",
@@ -76,7 +81,7 @@ export default function StartPage() {
             }}
           >
             검사시작
-          </button>
+          </Button>
         )}
       </body>
     </div>

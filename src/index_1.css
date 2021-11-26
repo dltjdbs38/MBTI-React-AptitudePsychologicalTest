@@ -1,0 +1,120 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:ital,wght@0,400;1,600&family=IBM+Plex+Sans+KR&family=Nunito:wght@600&display=swap");
+body {
+  margin: 0;
+  /* font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif; */
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.testResultPage {
+  padding: 300px 0px;
+}
+
+.startPage {
+  padding: 300px 0px;
+}
+
+.startPage header {
+  background-color: rgb(157, 196, 255);
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+}
+.startPage body {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  padding: 15px 0px;
+}
+.testExamplePage {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  padding: 100px 0px;
+}
+.testPage {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  padding: 0px 0px 10px 0px;
+  margin: 0px 0px 10px 0px;
+}
+
+.testPage div.Progress {
+  margin: 10px 0px;
+}
+div {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+}
+.testPage p {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  margin: 0px 0px 5px;
+}
+p {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  font-size: 18px;
+}
+h2 {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  font-weight: bold;
+}
+
+h3 {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+}
+h4 {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+}
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+} */
+
+code {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+}
+
+header {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  font-weight: bold;
+  font-size: 30px;
+  color: rgb(0, 25, 126);
+}
+
+/* button {
+  padding: 8px;
+  font-weight: bold;
+  font-size: 12px;
+  cursor: pointer;
+  border: 0 none;
+  border-radius: 6px;
+  padding: 9px 14px;
+  color: #fff;
+  background-color: dodgerblue;
+} */
+
+table {
+  border-collapse: collapse;
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table thead {
+  font-size: 20px;
+  font-weight: bold;
+  color: rgb(226, 234, 253);
+  background-color: rgb(0, 25, 126);
+}
+table td {
+  width: 25%;
+  height: 70px;
+  border: 1px solid #ccc;
+  text-align: center;
+  font-size: 20px;
+}
+
+/* a {
+  text-decoration: none;
+  display: block;
+  padding: 20px 0;
+  font-weight: bold;
+  color: #fff;
+  text-align: center;
+  border-radius: 10px;
+  background-color: rgb(16, 60, 104);
+} */

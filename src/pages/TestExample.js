@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
+import { Button } from "react-bootstrap";
 export default function TestExample() {
   return (
-    <>
+    <div className="testExamplePage">
       <header>검사 예시 페이지입니다.</header>
       <p>
         설문은 2지선일 형식으로 진행됩니다.
@@ -37,8 +38,10 @@ export default function TestExample() {
         </form>
       </div>
       <Link to="/test">
-        <button>검사시작</button>
+        <Button variant="primary" size="lg" type="button">
+          검사시작
+        </Button>
       </Link>
-    </>
+    </div>
   );
 }

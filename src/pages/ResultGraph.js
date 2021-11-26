@@ -269,97 +269,86 @@ export default function ResultGraph() {
       </table>
       <table>
         <thead>가치관과 관련이 높은 직업</thead>
+        <tbody></tbody>
+      </table>
+      <table>
+        <thead>종사자 평균 학력별</thead>
+      </table>
+      <table>
+        <thead>
+          <tr>
+            <th>학력</th>
+            <th>직업</th>
+          </tr>
+        </thead>
         <tbody>
-          <table>
-            <thead>종사자 평균 학력별</thead>
-            <tbody>
-              <tr>
-                <td>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>학력</th>
-                        <th>직업</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>고등학교 졸업자 </td>
-                        <td>{printJobs()[0]}</td>
-                      </tr>
-                      <tr>
-                        <td>전문대학교 졸업자 </td>
-                        <td>{printJobs()[1]}</td>
-                      </tr>
-                      <tr>
-                        <td>대학교 졸업자 </td>
-                        <td>{printJobs()[2]}</td>
-                      </tr>
-                      <tr>
-                        <td>대학원 졸업자 </td>
-                        <td>{printJobs()[3]}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-          <table>
-            <thead>종사자 평균 전공별</thead>
-            <tbody>
-              <tr>
-                <td>
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>전공</th>
-                        <th>직업</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>계열무관</td>
-                        <td>{printJobs2()[0]}</td>
-                      </tr>
-                      <tr>
-                        <td>인문</td>
-                        <td>{printJobs2()[1]}</td>
-                      </tr>
-                      <tr>
-                        <td>사회</td>
-                        <td>{printJobs2()[2]}</td>
-                      </tr>
-                      <tr>
-                        <td>교육</td>
-                        <td>{printJobs2()[3]}</td>
-                      </tr>
-                      <tr>
-                        <td>공학</td>
-                        <td>{printJobs2()[4]}</td>
-                      </tr>
-                      <tr>
-                        <td>자연</td>
-                        <td>{printJobs2()[5]}</td>
-                      </tr>
-                      <tr>
-                        <td>의학</td>
-                        <td>{printJobs2()[6]}</td>
-                      </tr>
-                      <tr>
-                        <td>예체능</td>
-                        <td>{printJobs2()[7]}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          <tr>
+            <td>고등학교 졸업자 </td>
+            <td>{printJobs()[0]}</td>
+          </tr>
+          <tr>
+            <td>전문대학교 졸업자 </td>
+            <td>{printJobs()[1]}</td>
+          </tr>
+          <tr>
+            <td>대학교 졸업자 </td>
+            <td>{printJobs()[2]}</td>
+          </tr>
+          <tr>
+            <td>대학원 졸업자 </td>
+            <td>{printJobs()[3]}</td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <thead>종사자 평균 전공별</thead>
+      </table>
+      <table>
+        <thead>
+          <tr>
+            <th>전공</th>
+            <th>직업</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>계열무관</td>
+            <td>{printJobs2()[0]}</td>
+          </tr>
+          <tr>
+            <td>인문</td>
+            <td>{printJobs2()[1]}</td>
+          </tr>
+          <tr>
+            <td>사회</td>
+            <td>{printJobs2()[2]}</td>
+          </tr>
+          <tr>
+            <td>교육</td>
+            <td>{printJobs2()[3]}</td>
+          </tr>
+          <tr>
+            <td>공학</td>
+            <td>{printJobs2()[4]}</td>
+          </tr>
+          <tr>
+            <td>자연</td>
+            <td>{printJobs2()[5]}</td>
+          </tr>
+          <tr>
+            <td>의학</td>
+            <td>{printJobs2()[6]}</td>
+          </tr>
+          <tr>
+            <td>예체능</td>
+            <td>{printJobs2()[7]}</td>
+          </tr>
         </tbody>
       </table>
       <Link to="/">
-        <button>다시 검사하기</button>
+        <Button variant="primary" size="lg" type="button">
+          다시 검사하기
+        </Button>
       </Link>
     </div>
   );
