@@ -28,6 +28,10 @@ body {
   font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   padding: 100px 0px;
 }
+.testExamplePage form div p {
+  font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  margin: 0px 0px 5px;
+}
 .testPage {
   font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   padding: 0px 0px 10px 0px;
