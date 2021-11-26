@@ -1,9 +1,8 @@
 import axios from "axios";
-import React, { useState, useRef, useEffect, useContext } from "react";
-import { useHistory, Link } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { Link } from "react-router-dom";
 import { UserContext } from "./UserInfo";
 import Chart from "chart.js/auto";
-import { Bar } from "react-chartjs-2";
 
 export default function ResultGraph() {
   const context = useContext(UserContext);
@@ -12,7 +11,6 @@ export default function ResultGraph() {
   const [jobs, setJobs] = useState([]);
   const [majors, setMajors] = useState([]);
   const [endTime, setEndTime] = useState("");
-  let ansArr = [];
   let jobArr = [];
   let majorArr = [];
   // const [seqIndex, setSeqIndex] = useState([]);
@@ -25,7 +23,6 @@ export default function ResultGraph() {
       //no1 no2 알아내기 위한 변수
       let result1 = [];
       let result2 = [];
-      let resultObj = [];
       let No1Index = "";
       let No2Index = "";
       let NoIndex = [];
@@ -212,13 +209,11 @@ export default function ResultGraph() {
     // console.log("seqIndex:", seqIndex);
   }, [graphArr, jobs, majors]);
 
-  let Mychart;
   useEffect(() => {
-    // latestGraphArr.current = graphArr;
     let ctx = document.getElementById("Mychart").getContext("2d");
     console.log("Now Draw graph : graphArr", graphArr);
     // if (typeof Mychart !== "undefined") Mychart.destroy();
-    Mychart = new Chart(ctx, {
+    let Mychart = new Chart(ctx, {
       type: "bar",
       data: {
         labels: [

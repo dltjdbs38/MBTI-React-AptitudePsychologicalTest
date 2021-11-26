@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useHistory } from "react-router-dom";
-import { useLocation } from "react-router";
+//import { useLocation } from "react-router";
 import axios from "axios";
 import { UserContext } from "./UserInfo";
-import { Radio } from "antd";
-import { tupleExpression } from "@babel/types";
 import ProgressBar from "react-bootstrap/ProgressBar";
 
 export default function TestPage() {
@@ -220,7 +218,7 @@ export default function TestPage() {
       <div className="question_block">{printQuestions()}</div>
       <button onClick={PrevPage}>이전</button>
       {/* 지금 localStorage에 있는 갯수랑 5,10,15,20,25랑 같거나 || 28개랑 같으면 넘어가기 */}
-      {localStorage.length === (pageCount + 1) * 5 ||
+      {localStorage.length >= (pageCount + 1) * 5 ||
       localStorage.length === saveData.length ? (
         <button onClick={NextPage}>
           {pageCount === 5 ? "결과보기" : "다음"}

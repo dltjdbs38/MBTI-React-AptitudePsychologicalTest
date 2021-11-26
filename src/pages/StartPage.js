@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import UserInfo, { UserContext } from "./UserInfo";
 export default function StartPage() {
   const [gender, setGender] = useState("");
