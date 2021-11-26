@@ -212,12 +212,13 @@ export default function ResultGraph() {
     // console.log("seqIndex:", seqIndex);
   }, [graphArr, jobs, majors]);
 
-  const canvasDom = useRef(null);
+  let Mychart;
   useEffect(() => {
     // latestGraphArr.current = graphArr;
-    const ctx = canvasDom.current.getContext("2d");
-    // console.log("ctx", ctx);
-    let chart = new Chart(ctx, {
+    let ctx = document.getElementById("Mychart").getContext("2d");
+    console.log("Now Draw graph : graphArr", graphArr);
+    // if (typeof Mychart !== "undefined") Mychart.destroy();
+    Mychart = new Chart(ctx, {
       type: "bar",
       data: {
         labels: [
@@ -238,13 +239,14 @@ export default function ResultGraph() {
             borderWidth: 1,
             hoverBackgroundColor: "rgba(0, 99, 255, 0.427)",
             hoverBorderColor: "rgba(0, 99, 255, 0.72)",
-            data: ["3", "3", "4", "3", "4", "5", "5", "1"],
-            // data: graphArr,
+            // data: ["3", "3", "4", "3", "4", "5", "5", "1"],
+            data: graphArr,
           },
         ],
       },
     });
-  }, []);
+    if (graphArr.length === 0) Mychart.destroy();
+  }, [graphArr]);
   return (
     <div>
       <header>직업 가치관 검사 결과</header>
@@ -267,7 +269,7 @@ export default function ResultGraph() {
       <table>
         <thead>직업가치관 결과</thead>
         <tbody>
-          <canvas id="chart" ref={canvasDom}></canvas>
+          <canvas id="Mychart"></canvas>
         </tbody>
       </table>
       <table>
