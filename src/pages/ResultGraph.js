@@ -3,6 +3,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserInfo";
 import Chart from "chart.js/auto";
+import { Button } from "react-bootstrap";
 
 export default function ResultGraph() {
   const context = useContext(UserContext);
@@ -272,7 +273,7 @@ export default function ResultGraph() {
         <tbody></tbody>
       </table>
       <table>
-        <thead>종사자 평균 학력별</thead>
+        <thead>1. 종사자 평균 학력별</thead>
       </table>
       <table>
         <thead>
@@ -300,8 +301,11 @@ export default function ResultGraph() {
           </tr>
         </tbody>
       </table>
+      <div>
+        <br />
+      </div>
       <table>
-        <thead>종사자 평균 전공별</thead>
+        <thead>2. 종사자 평균 전공별</thead>
       </table>
       <table>
         <thead>
@@ -345,8 +349,11 @@ export default function ResultGraph() {
           </tr>
         </tbody>
       </table>
+      <div>
+        <br />
+      </div>
       <Link to="/">
-        <Button variant="primary" size="lg" type="button">
+        <Button variant="primary" size="lg">
           다시 검사하기
         </Button>
       </Link>

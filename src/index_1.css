@@ -97,8 +97,6 @@ table {
 table thead {
   font-size: 20px;
   font-weight: bold;
-  color: rgb(226, 234, 253);
-  background-color: rgb(0, 25, 126);
 }
 table td {
   width: 25%;

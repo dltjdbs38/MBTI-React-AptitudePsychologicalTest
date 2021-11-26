@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
+
 export default function TestExample() {
   return (
     <div className="testExamplePage">
@@ -38,7 +39,7 @@ export default function TestExample() {
         </form>
       </div>
       <Link to="/test">
-        <Button variant="primary" size="lg" type="button">
+        <Button variant="primary" size="lg">
           검사시작
         </Button>
       </Link>
