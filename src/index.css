@@ -97,10 +97,14 @@ table {
   margin-left: auto;
   margin-right: auto;
 }
-
+/* 여기가 수정한 부분  background-color와 color 
+  background-color: rgb(0, 25, 126);
+  color: rgb(227, 239, 255);*/
 table thead {
   font-size: 20px;
   font-weight: bold;
+  background-color: rgb(0, 25, 126);
+  color: rgb(227, 239, 255);
 }
 table td {
   width: 25%;
