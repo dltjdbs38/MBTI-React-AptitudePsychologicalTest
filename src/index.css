@@ -55,6 +55,7 @@ p {
 h2 {
   font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   font-weight: bold;
+  font-size: 28px;
 }
 
 h3 {
@@ -62,6 +63,8 @@ h3 {
 }
 h4 {
   font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
+  color: rgb(0, 25, 126);
+  font-weight: bold;
 }
 /* code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
@@ -75,7 +78,7 @@ code {
 header {
   font-family: "Barlow", "IBM Plex Sans KR", "Nunito", sans-serif;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 35px;
   color: rgb(0, 25, 126);
 }
 
