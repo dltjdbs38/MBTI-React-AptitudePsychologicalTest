@@ -4,26 +4,6 @@ import { Link } from "react-router-dom";
 import { UserContext } from "./UserInfo";
 import Chart from "chart.js/auto";
 import { Button } from "react-bootstrap";
-import styled from "styled-components";
-
-// const Container = styled.div`
-//   width: 100%;
-//   height: 100vh;
-//   display: flex;
-//   justify-content: center;
-//   align-items: center;
-//   background-color: green;
-//   margin-left: auto;
-//   margin-right: auto;
-//   aspect-ratio: auto;
-// `;
-const Container = styled.div`
-  width: 60%;
-  background-color: white;
-  margin-left: auto;
-  margin-right: auto;
-  aspect-ratio: auto;
-`;
 
 export default function ResultGraph() {
   const context = useContext(UserContext);
@@ -284,11 +264,10 @@ export default function ResultGraph() {
       </table>
       <table>
         <thead>직업가치관 결과</thead>
-        <tbody></tbody>
+        <tbody>
+          <canvas id="Mychart"></canvas>
+        </tbody>
       </table>
-      <Container>
-        <canvas id="Mychart"></canvas>
-      </Container>
       <table>
         <thead>가치관과 관련이 높은 직업</thead>
         <tbody></tbody>

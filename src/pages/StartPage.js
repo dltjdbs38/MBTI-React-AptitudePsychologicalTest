@@ -7,11 +7,11 @@ export default function StartPage() {
   const [userName, setUserName] = useState("");
   const history = useHistory();
   const context = useContext(UserContext);
-  localStorage.clear(); //localstorage 초기화
+  //localStorage.clear(); //localstorage 초기화
 
   useEffect(() => {
     context.name = userName;
-    delete context.answer; //답안 지우기 - 꼭 다시 하기!!
+    //delete context.answer; //답안 지우기 - 꼭 다시 하기!!
     context.gender = gender;
     console.log(context);
     console.log(gender);
